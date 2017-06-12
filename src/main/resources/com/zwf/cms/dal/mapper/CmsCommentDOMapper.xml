@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.CmsCommentDOMapper">
+    <!-- 自动生成,请修�? CMS_COMMENT.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.CmsCommentDO">
+        <result column="IP" property="ip" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR" javaType="String"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR" javaType="String"/>
+        <result column="USERID" property="userid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="ARTICLEID" property="articleid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="COMMENTID" property="commentid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        IP,NAME,STATUS,USERID,CONTENT,ARTICLEID,COMMENTID,CREATETIME
+    </sql>
+
+
+    <!--插入�?:CMS_COMMENT-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CMS_COMMENT(
+            IP
+            ,NAME
+            ,STATUS
+            ,USERID
+            ,CONTENT
+            ,ARTICLEID
+            ,COMMENTID
+            ,CREATETIME
+        )VALUES(
+             #{ip,jdbcType=VARCHAR}
+            , #{name,jdbcType=VARCHAR}
+            , #{status,jdbcType=VARCHAR}
+            , #{userid,jdbcType=BIGINT}
+            , #{content,jdbcType=LONGVARCHAR}
+            , #{articleid,jdbcType=BIGINT}
+            , #{commentid,jdbcType=BIGINT}
+            , #{createtime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--更新�?:CMS_COMMENT-->
+    <update id="update" >
+        UPDATE /*MS-CMS-COMMENT-UPDATE*/ CMS_COMMENT
+        SET
+            IP              = #{ip,jdbcType=VARCHAR}
+            ,NAME            = #{name,jdbcType=VARCHAR}
+            ,STATUS          = #{status,jdbcType=VARCHAR}
+            ,USERID          = #{userid,jdbcType=BIGINT}
+            ,CONTENT         = #{content,jdbcType=LONGVARCHAR}
+            ,ARTICLEID       = #{articleid,jdbcType=BIGINT}
+            ,CREATETIME      = #{createtime,jdbcType=TIMESTAMP}
+        WHERE
+            COMMENTID       = #{commentid,jdbcType=BIGINT}
+    </update>
+
+    <!--根据主键删除数据:CMS_COMMENT-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-CMS-COMMENT-DELETEBYPRIMARY*/ FROM
+            CMS_COMMENT
+        WHERE
+            COMMENTID = #{commentid,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据主键获取数据:CMS_COMMENT-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-CMS-COMMENT-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM CMS_COMMENT
+        WHERE
+            COMMENTID = #{commentid,jdbcType=BIGINT}
+    </select>
+
+    <!--根据主键获取数据:CMS_COMMENT-->
+    <select id="getByArticleId" resultMap="BaseResultMap">
+        SELECT /*MS-CMS-COMMENT-GETBYARTICLEID*/  <include refid="Base_Column_List" />
+        FROM CMS_COMMENT
+        WHERE
+        ARTICLEID = #{articleid,jdbcType=BIGINT}
+    </select>
+
+    <!--根据主键获取数据:CMS_COMMENT-->
+    <select id="getByAllComment" resultMap="BaseResultMap">
+        SELECT /*MS-CMS-COMMENT-GETBYALLCOMMENT*/  <include refid="Base_Column_List" />
+        FROM CMS_COMMENT
+        ORDER BY CREATETIME DESC
+        LIMIT #{offset,jdbcType=BIGINT},#{rows,jdbcType=BIGINT}
+    </select>
+
+    <!--根据主键获取数据:CMS_COMMENT-->
+    <select id="getAllCommentCount" resultType="java.lang.Long">
+        SELECT /*MS-CMS-COMMENT-GETALLCOMMENTCOUNT*/  count(*)
+        FROM CMS_COMMENT
+    </select>
+</mapper>

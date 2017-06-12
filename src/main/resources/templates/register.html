@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>register</title>
+    <link  th:href="@{/css/style_log.css}"  rel="stylesheet" type="text/css"></link>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"></link>
+    <script  th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script  th:src="@{/js/jquery.form.min.js}"></script>
+    <script  th:src="@{/js/jquery.json.js}"></script>
+    <script  th:src="@{/js/bootstrap.js}"></script>
+    <script  th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/common-scripts.js}"></script>
+
+</head>
+<body class="login" mycollectionplug="bind">
+<div class="login_m">
+    <div class="login_reg_boder">
+        <div class="login_padding " id="login_model">
+            <h3 style="margin:0 auto;width:50px;">注册</h3>
+            <P style="margin:0;padding:0; width:80%;height:1px;background-color:#f9f9f9;"></P>
+            <form id="reg_form" class="form-horizontal register_form" th:method="POST"  th:action="@{/user/add/json}"  modelAttribute="user">
+            <div class="input-group" style="margin:0 auto;">
+                <h5>手机号</h5>
+                <label>
+                    <input type="text" name="account"  id="Account" class="form-control" />
+                </label>
+                <label id="acc_phone"></label>
+            </div>
+            <div class="input-group" style="margin:0 auto;">
+                <h5>姓名</h5>
+                <label>
+                    <input type="text" name="nickname"  id="userNname" class="form-control" />
+                </label>
+                <label  id="my_name"></label>
+            </div>
+            <div class="input-group" style="margin:0 auto;">
+                <h5>密码</h5>
+                <label>
+                    <input type="password" name="password"  id="userPwd" class="form-control" />
+                </label>
+                <label id="my_pwd"></label>
+            </div>
+            <div class="input-group" style="margin:0 auto;">
+                <h5>确认密码</h5>
+                <label>
+                    <input type="password" id="userPwdAgain" class="form-control" />
+                </label>
+                <label id="my_aPwd"></label>
+            </div>
+            <div class="input-group" style="margin:0 auto;">
+                <h5>邮箱</h5>
+                <label>
+                    <input type="text" name="email"  id="email" class="form-control" />
+                </label>
+                <label id="my_email"></label>
+            </div>
+
+            <div class="rem_sub" style="margin:0 auto;">
+                <label class="rem_sub_l" >
+                    <a th:href="@{/user/login}" class=" btn sub_button"   id="button" style="opacity: 0.7;">返回登录</a>
+                </label >
+
+                <label>
+                    <input type="submit" class="btn sub_re_buttons"  id="r_button" value="注册" style="opacity: 0.7;" />
+                </label>
+            </div>
+            </form>
+        </div>
+
+        <!--login_padding  Sign up end-->
+    </div><!--login_boder end-->
+</div><!--login_m end-->
+<script type="text/javascript">
+
+    $(function () {
+        //注册
+        $("#reg_form").bind('submit',function () {
+            var account = $('#Account').val();
+            var name = $('#userNname').val();
+            var password = $('#userPwd').val();
+            var againPwd = $('#userPwdAgain').val();
+            var email = $("#email").val();
+            var myreg = /^[-a-z0-9\._]+@([-a-z0-9\-]+\.)+[a-z0-9]{2,3}$/i;
+            var isSuccess = 1
+            if(account==''){
+                $('#acc_phone').html('<p style="color:red;">手机号不能为空</p>');
+                isSuccess = 0
+            }else {
+                $('#acc_phone').find('p').remove();
+            }
+
+            if(name==''){
+                $('#my_name').html('<p style="color:red;">用户名不能为空</p>');
+                isSuccess = 0
+            }else {
+                $('#my_name p').find('p').remove();
+            }
+
+            if(password==''){
+                $('#my_pwd').html('<p style="color:red;">密码不能为空</p>');
+                isSuccess = 0
+            }else {
+                $('#my_pwd p').find('p').remove();
+            }
+
+            if(againPwd==''){
+                $('#my_aPwd').html('<p style="color:red;">确认密码不能为空</p>');
+                isSuccess = 0
+            }else if(password!=againPwd) {
+                $('#my_aPwd').html('<p style="color:red;">密码和确认密码不一致</p>');
+                isSuccess = 0
+            }else {
+                $('#my_aPwd').find('p').remove();
+            }
+
+            if(email==''){
+                $('#my_email').html('<p style="color:red;">邮箱为空</p>');
+                isSuccess = 0
+            }else if(!myreg.test(email)){
+                $('#my_email').html('<p style="color:red;">邮箱不合法</p>');
+                isSuccess = 0
+            }else {
+                $('#my_email p').find('p').remove();
+            }
+             if(isSuccess == 0){
+                bootbox.alert("提交失败，请检查填写信息");
+                return false;
+            }
+
+        });
+
+        $('#reg_form').ajaxForm({
+            dataType : "json",
+            async:false,
+            success : function(data) {
+                if (data.result) {
+                    bootbox.alert("注册成功，将返回登录",function(){
+                        window.location.href='/user/login';
+                    })
+                }else{
+                    showErrors('#reg_form',data.errors)
+                    bootbox.alert("注册失败，重新注册");
+                }
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

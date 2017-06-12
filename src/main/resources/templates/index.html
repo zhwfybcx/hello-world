@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>layout</title>
+    <link rel="stylesheet" th:href="@{/css/changcai-cms.css}"></link>
+    <script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/cms-config.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common-cms.js}"></script>
+</head>
+<body>
+<div th:replace="temp/siteNav :: (${user == null}? in_nav : al_nav)"></div>
+<div class="consultBanner">
+    <i class="iconfont arrowL">&#xe60b;</i>
+    <i class="iconfont arrowR">&#xe60c;</i>
+    <div class="cbannerBox" id="cbannerBox">
+        <ul>
+                <li th:each="headline,headlineStat:${headlines}" th:attr="data-img=${headline.picture},class='banLi'+${headlineStat.count}">
+                    <div class="autoWidth"><a th:href="${headline.url}"> </a>
+                    </div>
+                </li>
+        </ul>
+        <ol id="bannerCtrl"></ol>
+    </div>
+</div>
+
+<div class="consultArticles">
+    <div class="container clearfix">
+        <div class="cLside fl">
+                <!-- 第三个div的不需要下划线 -->
+            <div class="cSession noBorder" th:each="folder:${folders}">
+                <div class="cTitle">
+                    <a th:href="${'/article/'+folder.folderId+'/1'}" class="aModule" th:text="${folder.name}"></a>
+                    <a th:href="${'/article/'+folder.folderId+'/1'}" class="cmore">更多<i class="iconfont">&#xe60d;</i></a>
+                </div>
+                <ul class="cList">
+                        <li class="clearfix" th:each="article:${folder.articles}" th:attr="data-article=${article.articleid}">
+                            <div class="lInfo fl">
+                                <h3>
+                                    <span class="samllTitle" th:text="${article.title}"></span>
+                                </h3>
+                                <div class="cIntro" th:text="${article.summary}"></div>
+                                <div class="catalogTimes">
+                                    <input type="button" th:value="${article.folderName}" class="catalogBtn" th:attr="data-folder=${article.folderid}" />
+                                    <div class="cPtime">发布时间：<span th:text="${#dates.format(article.createtime,'yyyy-MM-dd HH:mm')}"></span></div>
+                                </div>
+                            </div>
+                            <div class="rInfo fr">
+                                <img th:src="${article.picture}" th:attr="alt=${article.title}" />
+                            </div>
+                        </li>
+                </ul>
+        </div>
+    </div>
+    <div class="wrapCRside fl">
+        <div class="cRside fl">
+            <div class="cTitle">
+                <a th:href="@{/article/0/1}" class="aModule">最新资讯</a>
+                <a th:href="@{/article/0/1}" class="cmore">更多<i class="iconfont">&#xe60d;</i></a>
+            </div>
+            <ul class="lastestUl">
+                    <li th:each="article:${lastArticle}">
+                        <a th:href="${'/article/'+article.articleid+'.htm'}">
+                            <span class="samllTitle" th:text="${article.title}"></span>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript" th:src="@{/js/slider.js}"></script>
+<script type="text/javascript" th:src="@{/js/front/index.js}"></script>
+</body>
+</html>

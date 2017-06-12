@@ -1,0 +1,79 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="CMS_COMMENT" physicalName="CMS_COMMENT" remark="CMS_COMMENT">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入�?:CMS_COMMENT">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CMS_COMMENT(
+            IP
+            ,NAME
+            ,STATUS
+            ,USERID
+            ,CONTENT
+            ,ARTICLEID
+            ,COMMENTID
+            ,CREATETIME
+        )VALUES(
+             #{ip,jdbcType=VARCHAR}
+            , #{name,jdbcType=VARCHAR}
+            , #{status,jdbcType=VARCHAR}
+            , #{userid,jdbcType=BIGINT}
+            , #{content,jdbcType=LONGVARCHAR}
+            , #{articleid,jdbcType=BIGINT}
+            , #{commentid,jdbcType=BIGINT}
+            , #{createtime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新�?:CMS_COMMENT">
+        UPDATE CMS_COMMENT
+        SET
+            IP              = #{ip,jdbcType=VARCHAR}
+            ,NAME            = #{name,jdbcType=VARCHAR}
+            ,STATUS          = #{status,jdbcType=VARCHAR}
+            ,USERID          = #{userid,jdbcType=BIGINT}
+            ,CONTENT         = #{content,jdbcType=LONGVARCHAR}
+            ,ARTICLEID       = #{articleid,jdbcType=BIGINT}
+            ,CREATETIME      = #{createtime,jdbcType=TIMESTAMP}
+        WHERE
+            COMMENTID       = #{commentid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:CMS_COMMENT">
+        DELETE FROM
+            CMS_COMMENT
+        WHERE
+            COMMENTID = #{commentid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:CMS_COMMENT">
+        SELECT *
+        FROM CMS_COMMENT
+        WHERE
+            COMMENTID = #{commentid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByArticleId" multiplicity="many" remark="根据主键获取数据:CMS_COMMENT">
+        SELECT *
+        FROM CMS_COMMENT
+        WHERE
+        ARTICLEID = #{articleid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByAllComment" multiplicity="many" remark="根据主键获取数据:CMS_COMMENT">
+        SELECT *
+        FROM CMS_COMMENT
+        ORDER BY CREATETIME DESC
+        LIMIT #{offset,jdbcType=BIGINT},#{rows,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getAllCommentCount" multiplicity="one" resulttype="java.lang.Long" remark="根据主键获取数据:CMS_COMMENT">
+        SELECT count(*)
+        FROM CMS_COMMENT
+    </operation>
+
+
+</table>

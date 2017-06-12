@@ -1,0 +1,45 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="ADMIN_FOLDER" physicalName="ADMIN_FOLDER" remark="ADMIN_FOLDER">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入�?:ADMIN_FOLDER">
+        <!--<selectKey resultType="java.lang.Long" keyProperty="admin_id" order="AFTER">-->
+        <!--SELECT-->
+        <!--LAST_INSERT_ID()-->
+        <!--</selectKey>-->
+        INSERT INTO ADMIN_FOLDER(
+        ADMIN_ID
+        ,FOLDER_ID
+        ,CREATE_TIME
+        )VALUES(
+        #{adminId,jdbcType=BIGINT}
+        , #{folderId,jdbcType=BIGINT}
+        , now()
+        )
+    </operation>
+    <operation name="getByIds" multiplicity="many" remark=" 根据 管理员 id, 目录 id，获取 AdminFolder">
+        SELECT *
+        FROM ADMIN_FOLDER
+        WHERE
+        ADMIN_ID = #{adminId,jdbcType=BIGINT}
+        AND FOLDER_ID=#{folderId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="delete" paramtype="object" remark="根据管理员 id, 目录 id, 删除 AdminFolder">
+        DELETE FROM admin_folder
+        WHERE admin_id = #{adminId,jdbcType=BIGINT}
+        AND folder_id = #{folderId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByAdminId" remark="根据管理员 id, 删除 AdminFolder">
+        DELETE
+        FROM admin_folder
+        WHERE admin_id=#{adminId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByFolderId" remark="根据文件 id, 删除 AdminFolder">
+        DELETE
+        FROM admin_folder
+        WHERE folder_id=#{folderId,jdbcType=BIGINT}
+    </operation>
+</table>

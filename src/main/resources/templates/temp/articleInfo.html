@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="${article.title}"></title>
+    <meta name="keywords" content="资讯分析" />
+    <style>
+        body{
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/changcai-cms.css}"></link>
+    <link rel="stylesheet" th:href="@{/css/main_comment.css}"></link>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}"></link>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"></link>
+
+
+<!--
+    <link rel="stylesheet" th:href="@{/umeditor/themes/default/css/umeditor.css}"></link>
+-->
+
+
+
+
+    <script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+
+<!--    <script type="text/javascript" th:src="@{/umeditor/third-party/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/umeditor/third-party/template.min.js}"></script>
+    <script type="text/javascript" charset="utf-8" th:src="@{/umeditor/umeditor.config.js}"></script>
+    <script type="text/javascript" charset="utf-8" th:src="@{/umeditor/umeditor.min.js}"></script>
+    <script type="text/javascript" th:src="@{/umeditor/lang/zh-cn/zh-cn.js}"></script>-->
+    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.form.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.json.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
+
+
+
+</head>
+<body>
+<div th:replace="temp/siteNav :: (${user == null}? in_nav : al_nav)"></div>
+
+<div class="cArticlePro">
+    <div class="container clearfix">
+        <div class="mainArt fl">
+            <div class="hNav">
+                <a th:href="@{/}">资讯</a><i class="iconfont">&#xe60d;</i>
+                <a th:href="${'/article/'+fatherFolder.folderId+'/1'}" th:text="${fatherFolder.name}"></a><i class="iconfont">&#xe60d;</i>
+                <a th:href="${'/article/'+folder.folderId+'/1'}" th:text="${folder.name}"></a><i class="iconfont">&#xe60d;</i>
+                <span>正文</span>
+            </div>
+            <h2 th:text="${article.title}"></h2>
+            <div class="catalogTimes">
+                <input type="button" th:value="${article.folderName}" class="catalogBtn" data-folder="${article.folderid}" />
+                <div class="cPtime">发布时间：<span th:utext="${#dates.format(article.createtime, 'yyyy-MM-dd')}" ></span></div>
+            </div>
+            <div class="article-cont">
+               <!-- <h3 class="declareH2"><i class="iconfont">&#xe61e;</i><i th:text="${bqsm.configValue}"></i></h3>-->
+
+                <p th:utext="${article.content}"></p>
+
+            </div>
+
+
+            <!-- JiaThis Button BEGIN -->
+            <div class="jiathis_style_24x24"><span class="jiathis_txt">分享到：</span>
+                <a class="jiathis_button_weixin"><i class="iconfont">&#xe622;</i></a>
+                <a class="jiathis_button_tsina"><i class="iconfont">&#xe623;</i></a>
+                <a class="jiathis_button_qzone"><i class="iconfont">&#xe61f;</i></a>
+            </div>
+            <script type="text/javascript" >
+                var jiathis_config={
+                    summary:"",
+                    shortUrl:false,
+                    hideMore:false,
+                    imageWidth:26,
+                }
+            </script>
+            <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+            <!-- JiaThis Button END -->
+            <div class="wrapmain3 fl">
+                <h3>畅言</h3>
+            </div>
+            <div class="wrapmain2 fl">
+                <div class="form-group">
+                    <form id="add_comment_form" >
+                    <input type="hidden" id="com_userid" name="userid" th:value="${user == null}?'':${user.userid}" />
+                    <input type="hidden" name="articleid" th:value="${article.articleid}"/>
+                    <input type="hidden" name="name" th:value="${article.title}"/>
+                    <input type="hidden" name="status" value="display"/>
+                    <textarea id="text_con" class="form-control" name="content" rows="8" placeholder="来说两句吧。。。。。。。。"></textarea>
+                        <button  class="btn btn-danger btnCur" type="submit">评论一下</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="wrapmain fl">
+                <ol class="commentlist">
+                    <li class="comment even thread-even depth-1" th:each="com:${comment}">
+                        <div id="comment-2">
+                            <!--<h2 class="curh4">评论</h2>-->
+                            <a href="#" style="float:left;">
+<!--
+                                <img alt="" src="http://0.gravatar.com/avatar/2df5eab0988aa5ff219476b1d27df755?s=60&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G" class="avatar avatar-60 photo" height="60" width="60" />
+-->                               <i class="fa fa-user-circle curImg"></i>
+                            </a>
+                            <!-- 作者信息 -->
+                            <div class="comment-meta curMeta">
+
+                                <div class="author">
+                                    <i class="fn curFn" th:text="${com.userName}"></i>
+                                    <i class="comment-reply-link curReplay">评论</i>
+                                </div>
+
+                                <p class="date curDate">
+                                    <i th:text="${#dates.format(com.createtime,'yyyy-MM-dd')}"></i>
+                                </p>
+                            </div>
+
+                            <!-- 内容主题 -->
+                            <div class="comment-body">
+                                <p class="curBody" th:utext="${com.content}"></p>
+
+                                <div style="float: right;">
+                                    <a><i data-toggle="modal" th:attr="data-id=${com.commentid}"  data-target="#myModal" class="fa fa-commenting curImgICO data-id">回复</i></a>
+                                    <!-- 模态框（Modal） -->
+                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="modal-title" id="myModalLabel">
+                                                        回复
+                                                    </h4>
+                                                </div>
+                                                <!--  表单-->
+                                                <form id="add_replay_form" th:action="@{/topic/replay/add}" th:method="post">
+                                                    <div class="modal-body">
+                                                        <input type="hidden" id="rep_userid" name="userid" th:value="${user == null}?'':${user.userid}"/>
+                                                        <input id="com_id" type="hidden" name="commentid" th:value="${com.commentid}"/>
+                                                        <input type="hidden" name="name" th:value="${article.title}"/>
+                                                        <input type="hidden" name="status" value="display"/>
+                                                        <textarea id="replay_con" class="form-control" name="content" rows="8" placeholder="来说两句吧。。。。。。。。"></textarea>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary">
+                                                            提交
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                                <!--  表单-->
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
+                                    <!-- 模态框（Modal） -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 回复主体 -->
+                        <ul class="children">
+                            <li class="comment byuser comment-author-saqib-sarwar bypostauthor odd alt depth-2" id="li-comment-3" th:each="ref:${com.list}">
+                                <div id="comment-3">
+                                    <!-- <h2 class="curh4">回复</h2> -->
+                                    <a href="#" style="float:left;">
+                                        <i class="fa fa-user-circle curImg"></i>
+                                    </a>
+                                    <!-- 头部 -->
+                                    <div class="comment-meta curMeta">
+
+                                        <div class="author">
+                                            <!-- 作者 -->
+                                            <i class="fn curFn" th:text="${ref.UserReplayName}"></i>
+                                            <i class="comment-reply-link curReplay">回复</i>
+                                            <i class="comment-reply-link curReplay" th:text="${com.userName}" style="color:#000;font-weight:bold; "></i>
+                                        </div>
+                                        <!-- 时间 -->
+                                        <p class="date curDate">
+                                            <i th:text="${#dates.format(ref.createtime,'yyyy-MM-dd')}"></i>
+                                        </p>
+                                    </div>
+                                    <!-- 内容主体 -->
+                                    <div class="comment-body">
+                                        <p class="curBody" th:utext="${ref.content}"></p>
+                                    </div><!-- end of comment-body -->
+                                </div><!-- end of comment -->
+                            </li>
+                        </ul>
+                    </li>
+
+                </ol>
+
+            </div>
+
+
+
+            <!--  评论-->
+           <!-- <div th:each="com:${comment}">
+                <p th:text="${com.content}"></p>
+                <ul th:each="ref:${com.list}">
+                    <li th:text="${ref.content}"></li>
+                </ul>
+            </div>-->
+            <!--评论后-->
+
+        </div>
+
+        <div class="rBAr fl">
+                <div class="cModules">
+                    <div class="cTitle">
+                        <a th:href="${'/article/'+fatherFolder.folderId+'/1'}" class="aModule" th:text="${fatherFolder.name}"></a>
+                        <a th:href="${'/article/'+fatherFolder.folderId+'/1'}" class="cmore" >更多<i class="iconfont"></i></a>
+                    </div>
+                    <ul class="lastestUl" >
+                            <li th:each="article:${sameFolderArticle}">
+                                <a th:href="${'/article/'+article.articleid+'.htm'}">
+                                    <span class="samllTitle" th:text="${article.title}"></span>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="cModules">
+                    <div class="cTitle">
+                        <a th:href="@{/article/0/1}" class="aModule">最新资讯</a>
+                        <a th:href="@{/article/0/1}" class="cmore">更多<i class="iconfont"></i></a>
+                    </div>
+                    <ul class="lastestUl" >
+                            <li th:each="article:${lastArticle}">
+                                <a th:href="${'/article/'+article.articleid+'.htm'}">
+                                    <span class="samllTitle" th:text="${article.title}"></span>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript" th:src="@{/js/cms-config.js}"></script>
+<script type="text/javascript" th:src="@{/js/common-cms.js}"></script>
+<script type="text/javascript" >
+    $(function($) {
+        //处理大屏加载数据
+        var clientH = document.documentElement.clientHeight,//可视区高度
+            topH = $(".new-header").height(),
+            bottomH = $(".new-footer").innerHeight();
+        //console.info(clientH - topH - bottomH+" "+clientH+" " +topH +" "+ bottomH);
+        $("#container").css("minHeight",clientH - topH - bottomH);
+        //二维码
+        $("#qr-code").on({
+            mouseenter : function() {
+                $(this).addClass("qr-active");
+                $(this).find(".qrCodes").stop().slideDown();
+            },
+            mouseleave : function() {
+                $(this).removeClass("qr-active");
+                $(this).find(".qrCodes").stop().slideUp(200);
+            }
+        });
+    });
+
+    $(function() {
+        $("#add_comment_form").bind('submit',function () {
+            var con = $("#text_con").val();
+            if(con == ''){
+                bootbox.alert("请输入内容");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "/topic/comment/add",
+                dataType: "json",
+                data: $('#add_comment_form').serialize(),
+                success: function (data) {
+                    if(data.result){
+                        window.location.reload();
+                    }else {
+                        bootbox.alert("评论保存失败!");
+                    }
+                },
+                error: function(data) {
+                    window.location.href="/user/login";
+                }
+            })
+        });
+
+      /*  $("#add_comment_form").bind('submit',function () {
+            var con = $("#text_con").val();
+            if(con == ''){
+                bootbox.alert("请输入内容");
+                return false;
+            }
+        });
+*/
+        $("#add_replay_form").bind('submit',function () {
+            var con = $("#replay_con").val();
+            if(con == ''){
+                bootbox.alert("请输入内容");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "/topic/replay/add",
+                dataType: "json",
+                data: $('#add_replay_form').serialize(),
+                success: function (data) {
+                    if(data.result){
+                        window.location.reload();
+                    }else {
+                        bootbox.alert("评论保存失败!");
+                    }
+                },
+                error: function(data) {
+                    window.location.href="/user/login";
+                }
+            })
+        });
+
+        /*$("#add_comment_form").ajaxForm({
+            dataType : "json",
+            async:false,
+            success : function(data) {
+                if(data!=null){
+                    if (data.result) {
+                        bootbox.alert("保存成功",function(){
+                            window.location.reload();
+                        })
+                    }else{
+                        window.location.reload();
+                        bootbox.alert("保存失败");
+                    }
+                }
+            }
+        })*/
+
+        $(".data-id").bind('click',function () {
+           var dataId = $(this).attr("data-id")
+            $('#com_id').val(dataId);
+        })
+
+
+    });
+</script>
+
+
+<script type="text/javascript" th:src="@{/js/front/articleInfo.js}"></script>
+<script type="text/javascript" th:src="@{/js/front/calendar.js}"></script>
+
+</body>
+</html>

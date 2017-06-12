@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.ExtArticleDOMapper">
+    <!-- 自动生成,请修改 ARTICLE.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.ArticleDO">
+        <result column="PATH" property="path" jdbcType="VARCHAR" javaType="String"/>
+        <result column="TITLE" property="title" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PICURL" property="picurl" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ADMINID" property="adminid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CHECKIF" property="checkif" jdbcType="CHAR" javaType="String"/>
+        <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="PICTURE" property="picture" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SUMMARY" property="summary" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FOLDERID" property="folderid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="ARTICLEID" property="articleid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="VIEWCOUNT" property="viewcount" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="ARTICLEURL" property="articleurl" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="COMMENTCOUNT" property="commentcount" jdbcType="INTEGER" javaType="Integer"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        PATH,TITLE,PICURL,STATUS,ADMINID,CHECKIF,CONTENT,PICTURE,SUMMARY,FOLDERID,ARTICLEID,VIEWCOUNT,ARTICLEURL,CREATETIME,UPDATETIME,COMMENTCOUNT
+    </sql>
+    
+    <sql id="Base_Column_List_NoContent">
+        PATH,TITLE,PICURL,ADMINID,PICTURE,SUMMARY,STATUS,FOLDERID,ARTICLEID,CREATETIME,UPDATETIME
+    </sql>
+   
+    <!--分页查询list:ARTICLE-->
+    <select id="queryParmArticleList" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List_NoContent" />
+        FROM ARTICLE WHERE 1=1 
+        <if test="folderid != null and folderid > 0">
+           and FOLDERID = #{folderid,jdbcType=BIGINT}
+        </if>
+        ORDER BY createtime desc
+        limit #{offset},#{rows}
+    </select>
+    
+    <!--分页查询count-->
+    <select id="countParmArticleList" resultType="java.lang.Long">
+        SELECT  count(1)  FROM article  WHERE 1=1 
+        <if test="folderid != null and folderid > 0">
+           and FOLDERID = #{folderid,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <select id="getArticleListByFolderIds" resultMap="BaseResultMap">
+		select  <include refid="Base_Column_List_NoContent" /> 
+		FROM ARTICLE  
+		where folderId in 
+		<foreach collection="folderStr" item="f" index="index" open="(" close=")" separator=",">
+           #{f,jdbcType=VARCHAR}
+		</foreach>
+			and status = 'display' and `checkif` = 'yes' 
+		order by createtime desc limit #{offset},#{rows} 
+	</select>
+	
+	<select id="countArticleListByFolderIds" resultType="java.lang.Long">
+		select count(*) from article 	
+		where folderId in 
+		<foreach collection="folderStr" item="f" index="index" open="(" close=")" separator=",">
+           #{f,jdbcType=VARCHAR}
+		</foreach>
+			and status = 'display' and `checkif` = 'yes' 
+	</select>
+</mapper>

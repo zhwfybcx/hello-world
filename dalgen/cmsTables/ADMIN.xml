@@ -1,0 +1,73 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="ADMIN" physicalName="ADMIN" remark="ADMIN">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:ADMIN">
+        <selectKey resultType="java.lang.Long" keyProperty="adminId" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ADMIN(
+        NAME
+        ,ADMIN_ID
+        ,PASSWORD
+        ,CREATE_TIME
+        ,UPDATE_TIME
+        )VALUES(
+        #{name,jdbcType=VARCHAR}
+        , #{adminId,jdbcType=BIGINT}
+        , #{password,jdbcType=VARCHAR}
+        , now()
+        , now()
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:ADMIN">
+        UPDATE ADMIN
+        SET
+        NAME            = #{name,jdbcType=VARCHAR}
+        ,PASSWORD        = #{password,jdbcType=VARCHAR}
+        ,UPDATE_TIME     = now()
+        WHERE
+        ADMIN_ID        = #{adminId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:ADMIN">
+        DELETE FROM
+        ADMIN
+        WHERE
+        ADMIN_ID = #{adminId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:ADMIN">
+        SELECT *
+        FROM ADMIN
+        WHERE
+        ADMIN_ID = #{adminId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByName" multiplicity="one" remark="根据姓名获取数据:ADMIN">
+        SELECT *
+        FROM ADMIN
+        WHERE
+        name = #{name,jdbcType=VARCHAR}
+    </operation>
+
+    <operation name="getPartList" multiplicity="many" remark="获取部分数据:ADMIN">
+        SELECT *
+        FROM ADMIN
+        limit #{offset,jdbcType=BIGINT},#{rows,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getAllListCount" multiplicity="one" resulttype="int" remark="获取部分数据的数量:ADMIN">
+        SELECT count(*)
+        FROM ADMIN
+    </operation>
+
+    <operation name="getAllList" multiplicity="many"  remark="获取全部数据的数量:ADMIN">
+        SELECT *
+        FROM ADMIN
+        ORDER BY update_time
+    </operation>
+
+</table>

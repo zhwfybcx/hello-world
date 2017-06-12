@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>更新文章</title>
+    <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script th:src="@{/ueditor/ueditor.config.js}"></script>
+    <script th:src="@{/ueditor/ueditor.all.js}"></script>
+    <script th:src="@{/js/jquery.form.min.js}"></script>
+    <script th:src="@{/js/jquery.json.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
+
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa-laptop"></i> 更新文章</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a th:href="@{/manage/article/list}">文章管理</a></li>
+                <li><i class="fa fa-laptop"></i><a id="update_article">更新文章</a></li>
+            </ol>
+        </div>
+    </div>
+<!--
+    <h1 class="page-header">修改文章</h1>
+-->
+    <div class="row">
+        <form id="add_article_form" th:action="@{/manage/article/json/update}" th:method="post">
+            <input type="hidden" name="articleid" th:value="${articleVo.articleid}"/>
+
+            <div class="form-group">
+                <label>当前封面</label>
+                <img th:src="@{${articleVo.picture}}" style="height:200px;"/>
+                <br/>
+                <label>选择封面</label>
+                <input type="file" name="file" class="" accept="image/*" />
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail2">文章标题</label>
+                <input type="text" class="form-control" id="exampleInputEmail2" name="title" th:value="${articleVo.title}"/>
+            </div>
+
+            <label>文章目录</label>
+            <select class="form-control" name="folderid">
+                <option th:each="fvos:${foldervos}"
+                        th:value="${fvos.folderId}"
+                        th:selected="${fvos.folderId == articleVo.folderid}?true:false"
+                        th:text="${fvos.pathName}"></option>
+            </select>
+            <label>文章状态</label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="inlineRadio1" value="display" th:checked="checked"/>
+                显示
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="inlineRadio2" value="nodisplay"/>
+                不显示
+            </label>
+
+            <br/>
+            <label>文章内容</label>
+            <!-- 实例化编辑器 -->
+            <script type="text/javascript">
+                var ue = UE.getEditor('editor');
+            </script>
+            <script id="editor" name="content" type="text/plain" style="z-index:200;width:100%;height:500px;" th:utext="${articleVo.content}"></script>
+            <div class="form-group">
+                <label for="exampleInputEmail2">文章摘要<a href="javascript:void(0)" class="btn btn-default" id="getSummary" >智能生成摘要</a></label>
+                <input type="text" class="form-control" id="summary" name="summary" th:value="${articleVo.summary}" required="required" />
+            </div>
+            <button type="submit" class="btn btn-default">增加</button>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#add_article_form').ajaxForm({
+                dataType: 'json',
+                success: function (data) {
+                    if (data.result) {
+                        bootbox.dialog({
+                            message : "保存成功",
+                            title : "提示",
+                            buttons : {
+                                add : {
+                                    label : "继续编辑",
+                                    className : "btn-success",
+                                    callback : function() {
+                                        window.location.reload();
+                                    }
+                                },
+                                list : {
+                                    label : "返回文章列表",
+                                    className : "btn-primary",
+                                    callback : function() {
+                                        var  url = '/manage/article/list';
+                                        window.location.href=url
+                                    }
+                                },
+                            }
+                        });
+                    } else {
+                        bootbox.alert("表单提交有错误!");
+                    }
+                }
+            });
+
+
+            $('#update_article').bind('click',function(){
+                window.location.reload();
+            })
+               $("#getSummary").click( function () {
+             $("#summary").val(ue.getContentTxt().substring(0,120));
+             });
+        });
+    </script>
+</div>
+
+</body>
+</html>

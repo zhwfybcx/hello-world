@@ -1,0 +1,160 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="FOLDER" physicalName="FOLDER" remark="FOLDER">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入�?:FOLDER">
+        <selectKey resultType="java.lang.Long" keyProperty="folderId" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO FOLDER(
+        NAME
+        ,PATH
+        ,SORT
+        ,ENAME
+        ,LEVEL
+        ,STATUS
+        ,FATHER_ID
+        ,CREATE_TIME
+        ,UPDATE_TIME
+        )VALUES(
+        #{name,jdbcType=VARCHAR}
+        , #{path,jdbcType=VARCHAR}
+        , #{sort,jdbcType=BIGINT}
+        , #{ename,jdbcType=VARCHAR}
+        , #{level,jdbcType=BIGINT}
+        , #{status,jdbcType=VARCHAR}
+        , #{fatherId,jdbcType=BIGINT}
+        , now()
+        , now()
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表?:FOLDER">
+        UPDATE FOLDER
+        SET
+        NAME            = #{name,jdbcType=VARCHAR}
+        ,PATH            = #{path,jdbcType=VARCHAR}
+        ,ENAME           = #{ename,jdbcType=VARCHAR}
+        ,LEVEL           = #{level,jdbcType=BIGINT}
+        ,STATUS          = #{status,jdbcType=VARCHAR}
+        ,FATHER_ID       = #{fatherId,jdbcType=BIGINT}
+        ,UPDATE_TIME     = now()
+        WHERE
+        FOLDER_ID       = #{folderId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:FOLDER">
+        DELETE FROM
+        FOLDER
+        WHERE
+        FOLDER_ID = #{folderId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:FOLDER">
+        SELECT *
+        FROM FOLDER
+        WHERE
+        FOLDER_ID = #{folderId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByEname" multiplicity="one" remark="根据英文名字: 获取数据:FOLDER">
+        SELECT *
+        FROM FOLDER
+        WHERE
+        ENAME = #{ename,jdbcType=VARCHAR}
+    </operation>
+
+    <operation name="updatePathLevel" paramtype="primitive" remark="根据id更新数据：path,level">
+        UPDATE FOLDER
+        SET
+        PATH = #{path,jdbcType=VARCHAR}
+        ,LEVEL = #{level,jdbcType=BIGINT}
+        ,UPDATE_TIME = NOW()
+        WHERE
+        FOLDER_ID = #{folderId,jdbcType=BIGINT}
+    </operation>
+    <operation name="updateSort" paramtype="primitive" remark="根据 id 更新数据:sort">
+        UPDATE FOLDER
+        SET
+        SORT = #{sort,jdbcType=BIGINT}
+        ,UPDATE_TIME = NOW()
+        WHERE
+        FOLDER_ID = #{folderId,jdbcType=BIGINT}
+    </operation>
+    <operation name="getAllFolder" multiplicity="many" remark="查找所有目录">
+        SELECT *
+        FROM FOLDER
+        LIMIT 20000
+    </operation>
+
+    <operation name="getChildFolderNum" multiplicity="one" resulttype="java.lang.Long" remark="子目录的数量">
+        SELECT count(1)
+        FROM folder
+        WHERE father_id = #{fatherId,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getChildFolderPages" multiplicity="many" remark="查找子目录并进行分页">
+        SELECT *
+        FROM folder
+        WHERE father_id = #{fatherId,jdbcType=BIGINT}
+        ORDER BY sort
+        LIMIT #{offset,jdbcType=TINYINT}, #{row,jdbcType=TINYINT};
+    </operation>
+
+    <operation name="getFolderAdminId" multiplicity="many" remark="根据管理员查找所有目录">
+        SELECT *
+        FROM folder
+        WHERE folder_id IN (
+        SELECT af.folder_id
+        FROM admin_folder af
+        WHERE af.admin_id = #{adminId,jdbcType=BIGINT}
+        )
+    </operation>
+
+    <operation name="getFolderPageByAdminId" multiplicity="many" remark="根据管理员查找目录分页">
+        SELECT *
+        FROM folder
+        WHERE folder_id IN (
+        SELECT af.folder_id
+        FROM admin_folder af
+        WHERE af.admin_id = #{adminId,jdbcType=BIGINT}
+        )
+        LIMIT #{offset,jdbcType=TINYINT},#{row,jdbcType=TINYINT};
+    </operation>
+
+    <operation name="getFolderByNoAdminId" multiplicity="many" remark="根据管理员Id 获取没有管理权限的目录">
+        SELECT *
+        FROM folder
+        WHERE folder_id NOT IN (
+        SELECT af.folder_id
+        FROM admin_folder af
+        WHERE af.admin_id = #{adminId,jdbcType=BIGINT}
+        );
+    </operation>
+
+    <operation name="getFolderCountbyAdminId" multiplicity="one" resulttype="java.lang.Long" remark="根据管理员id获取管理的目录数量">
+        SELECT count(1)
+        FROM folder
+        WHERE folder_id IN (
+        SELECT af.folder_id
+        FROM admin_folder af
+        WHERE af.admin_id = #{adminId,jdbcType=BIGINT}
+        )
+    </operation>
+
+    <operation name="getFolderByFatherIdStatus" multiplicity="many" remark="根据父Id，状态获得 folder">
+        SELECT *
+        FROM folder
+        WHERE father_id=#{fatherId,jdbcType=BIGINT}
+        AND status=#{status,jdbcType=VARCHAR}
+    </operation>
+
+    <operation name="getByFatherId" multiplicity="many" remark="根据父亲ID获取数据:father_id">
+        SELECT *
+        FROM FOLDER
+        WHERE
+        father_id = 0
+        AND status= 'display'
+    </operation>
+</table>

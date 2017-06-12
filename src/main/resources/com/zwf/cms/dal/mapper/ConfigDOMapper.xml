@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.ConfigDOMapper">
+    <!-- 自动生成,请修�? CONFIG.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.ConfigDO">
+        <result column="CONFIG_KEY" property="configKey" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="CONFIG_VALUE" property="configValue" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DESCRIPTION" property="description" jdbcType="LONGVARCHAR" javaType="String"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        CONFIG_KEY,CREATETIME,CONFIG_VALUE,DESCRIPTION
+    </sql>
+
+
+    <!--插入�?:CONFIG-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CONFIG(
+            CONFIG_KEY
+            ,CREATETIME
+            ,CONFIG_VALUE
+            ,DESCRIPTION
+        )VALUES(
+             #{configKey,jdbcType=VARCHAR}
+            , #{createtime,jdbcType=TIMESTAMP}
+            , #{configValue,jdbcType=VARCHAR}
+            , #{description,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+
+    <!--更新�?:CONFIG-->
+    <update id="update" >
+        UPDATE /*MS-CONFIG-UPDATE*/ CONFIG
+        SET
+            CREATETIME      = #{createtime,jdbcType=TIMESTAMP}
+            ,CONFIG_VALUE    = #{configValue,jdbcType=VARCHAR}
+            ,DESCRIPTION     = #{description,jdbcType=LONGVARCHAR}
+        WHERE
+            CONFIG_KEY      = #{configKey,jdbcType=VARCHAR}
+    </update>
+
+    <!--根据主键删除数据:CONFIG-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-CONFIG-DELETEBYPRIMARY*/ FROM
+            CONFIG
+        WHERE
+            CONFIG_KEY = #{configKey,jdbcType=VARCHAR}
+    </delete>
+
+    <!--根据主键获取数据:CONFIG-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-CONFIG-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM CONFIG
+        WHERE
+            CONFIG_KEY = #{configKey,jdbcType=VARCHAR}
+    </select>
+</mapper>

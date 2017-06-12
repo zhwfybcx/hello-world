@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>登录</title>
+    <meta charset="utf-8"></meta>
+    <!-- Bootstrap Styles-->
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"></link>
+    <!-- FontAwesome Styles-->
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet"></link>
+    <!-- <link th:href="@{/css/dashboard.css}" rel="stylesheet"></link>-->
+
+
+    <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.form.min.js}"></script>
+    <script th:src="@{/js/jquery.json.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+
+
+    <link th:href="@{/css/login.css}" rel='stylesheet' type='text/css' />
+    <!--webfonts-->
+    <!--<link href='http://fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700' rel='stylesheet' type='text/css' />
+    <link href='http://fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css' />-->
+    <!--//webfonts-->
+
+</head>
+<body>
+    <div class="login-form">
+        <div class="clear"> </div>
+        <div class="avtar">
+            <img th:src="@{/image/avtar.png}" />
+        </div>
+        <form id="form-signin" th:action="@{/admin/json/login}" th:method="post" >
+            <input type="text"  name="username" class="text" placeholder="用户名" th:required="required" />
+            <input type="password"  name="password"  placeholder="密码" th:required="required" />
+            <div class="login_fields__submit">
+                <input type="submit" value="登录" />
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#form-signin').ajaxForm({
+                dataType: 'json',
+                success: function (data) {
+                    if (data.result) {
+                        window.location.href="/manage/article/list";
+                    } else {
+                        bootbox.alert("用户名或者密码错误!");
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

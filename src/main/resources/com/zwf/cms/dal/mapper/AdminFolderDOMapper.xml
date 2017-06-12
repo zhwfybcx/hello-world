@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.AdminFolderDOMapper">
+    <!-- 自动生成,请修�? ADMIN_FOLDER.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.AdminFolderDO">
+        <result column="ADMIN_ID" property="adminId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="FOLDER_ID" property="folderId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ADMIN_ID,FOLDER_ID,CREATE_TIME
+    </sql>
+
+
+    <!--插入�?:ADMIN_FOLDER-->
+    <insert id="insert" >
+        <!--<selectKey resultType="java.lang.Long" keyProperty="admin_id" order="AFTER">-->
+        <!--SELECT-->
+        <!--LAST_INSERT_ID()-->
+        <!--</selectKey>-->
+        INSERT INTO ADMIN_FOLDER(
+        ADMIN_ID
+        ,FOLDER_ID
+        ,CREATE_TIME
+        )VALUES(
+        #{adminId,jdbcType=BIGINT}
+        , #{folderId,jdbcType=BIGINT}
+        , now()
+        )
+    </insert>
+
+    <!-- 根据 管理员 id, 目录 id，获取 AdminFolder-->
+    <select id="getByIds" resultMap="BaseResultMap">
+        SELECT /*MS-ADMIN-FOLDER-GETBYIDS*/  <include refid="Base_Column_List" />
+        FROM ADMIN_FOLDER
+        WHERE
+        ADMIN_ID = #{adminId,jdbcType=BIGINT}
+        AND FOLDER_ID=#{folderId,jdbcType=BIGINT}
+    </select>
+
+    <!--根据管理员 id, 目录 id, 删除 AdminFolder-->
+    <delete id="delete" >
+        DELETE /*MS-ADMIN-FOLDER-DELETE*/ FROM admin_folder
+        WHERE admin_id = #{adminId,jdbcType=BIGINT}
+        AND folder_id = #{folderId,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据管理员 id, 删除 AdminFolder-->
+    <delete id="deleteByAdminId" >
+        DELETE
+        FROM admin_folder
+        WHERE admin_id=#{adminId,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据文件 id, 删除 AdminFolder-->
+    <delete id="deleteByFolderId" >
+        DELETE
+        FROM admin_folder
+        WHERE folder_id=#{folderId,jdbcType=BIGINT}
+    </delete>
+</mapper>

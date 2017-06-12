@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>layout</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/changcai-cms.css}"></link>
+
+    <script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/front/articleList.js}"></script>
+    <script type="text/javascript" th:src="@{/js/cms-config.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common-cms.js}"></script>
+</head>
+<body>
+<div th:replace="temp/siteNav :: (${user == null}? in_nav : al_nav)"></div>
+<div class="consultPro">
+    <div class="container clearfix">
+        <div class="cfixNav fl">
+            <a th:href="@{/}" class="goBack"><i class="iconfont">&#xe61d;</i>返回资讯首页</a>
+            <ul>
+                <li class="active" ><a th:href="@{/article/0/1}">全部资讯</a></li>
+                <li th:each="folder:${indexFolders}"   class="active"><a th:href="${'/article/'+folder.folderId+'/1'}" th:text="${folder.name}"></a></li>
+            </ul>
+        </div>
+
+        <!-- 资讯列表 -->
+        <div class="cListCont fl">
+            <div class="cPart" id="#part-fir">
+                <!-- 子目录列表 -->
+                <div th:if="${subFolders}!=null and ${#lists.size(subFolders)} > 0">
+                    <div class="subFolder">
+                        <ul>
+                            <li id="folder_0" th:attr="data-folder=${fatherFolderId}"  th:value="${fatherFolderId}">全部</li>
+                            <li th:each="f:${subFolders}"  th:attr="data-folder=${f.folderId},id=${'folder_'+f.folderId}"  th:text="${f.name}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 文章列表 -->
+                <ul class="alists" th:each="article,articleStat:${list}">
+                    <li  class="firItem clearfix" th:attr="data-article=${article.articleid}" >
+                            <!-- 前三个文章有图片 -->
+                       <div class="lInfo fl">
+                            <h3>
+                                <span class="samllTitle" th:text="${article.title}"></span>
+                            </h3>
+                            <div class="cIntro" th:text="${article.summary}"></div>
+                            <div class="catalogTimes">
+                                <input type="button" th:value="${article.folderName}" class="catalogBtn" th:attr="data-folder=${article.folderid}" />
+                                <div class="cPtime">发布时间： <span th:text="${#dates.format(article.createtime,'yyyy-MM-dd HH:mm')}"></span></div>
+                            </div>
+                      </div>
+                      <div class="rInfo fr">
+                            <img th:src="${article.picture}" alt="" />
+                      </div>
+              </li>
+            </ul>
+        </div>
+
+        <div class="uiPage" th:utext="${pageVo.frontPageNumHtml}">
+
+            <div class="goDiv">
+                跳至<input type="text" class="goPageIpt" id ="goPageIpt" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />页
+                <input type="button" value="跳转" class="goBtn" id="goBtn" />
+            </div>
+        </div>
+        <input type="hidden" th:value="${pageVo.pageCount}" id="pageCount" />
+        <input type="hidden" th:value="${folderId}" id="folderId" />
+        <input type="hidden" th:value="${fatherFolderId}" id="fatherFolderId" />
+    </div>
+</div>
+
+</div>
+
+
+<script type="text/javascript" >
+    $(function($) {
+        //处理大屏加载数据
+        var clientH = document.documentElement.clientHeight,//可视区高度
+            topH = $(".new-header").height(),
+            bottomH = $(".new-footer").innerHeight();
+        //console.info(clientH - topH - bottomH+" "+clientH+" " +topH +" "+ bottomH);
+        $("#container").css("minHeight",clientH - topH - bottomH);
+        //二维码
+        $("#qr-code").on({
+            mouseenter : function() {
+                $(this).addClass("qr-active");
+                $(this).find(".qrCodes").stop().slideDown();
+            },
+            mouseleave : function() {
+                $(this).removeClass("qr-active");
+                $(this).find(".qrCodes").stop().slideUp(200);
+            }
+        });
+    });
+</script>
+</body>
+</html>

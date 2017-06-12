@@ -1,0 +1,82 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="USER" physicalName="USER" remark="USER">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入�?:USER">
+        <selectKey resultType="java.lang.Long" keyProperty="userid" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO USER(
+            EMAIL
+            ,USERID
+            ,ACCOUNT
+            ,NICKNAME
+            ,PASSWORD
+            ,CREATETIME
+        )VALUES(
+             #{email,jdbcType=VARCHAR}
+            , #{userid,jdbcType=BIGINT}
+            , #{account,jdbcType=BIGINT}
+            , #{nickname,jdbcType=VARCHAR}
+            , #{password,jdbcType=VARCHAR}
+            , #{createtime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新�?:USER">
+        UPDATE USER
+        SET
+            EMAIL           = #{email,jdbcType=VARCHAR}
+            ,ACCOUNT         = #{account,jdbcType=BIGINT}
+            ,NICKNAME        = #{nickname,jdbcType=VARCHAR}
+            ,PASSWORD        = #{password,jdbcType=VARCHAR}
+            ,CREATETIME      = #{createtime,jdbcType=TIMESTAMP}
+        WHERE
+            USERID          = #{userid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:USER">
+        DELETE FROM
+            USER
+        WHERE
+            USERID = #{userid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:USER">
+        SELECT *
+        FROM USER
+        WHERE
+            USERID = #{userid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByDateCount" multiplicity="one"  resulttype="java.lang.Long" remark="根据主键获取数据:USER">
+        SELECT  COUNT(*)
+        FROM USER
+        WHERE DATE_FORMAT(createTime,'%Y-%m-%d') = #{timeDesc,jdbcType=VARCHAR}
+    </operation>
+
+    <operation name="getAllUser" multiplicity="many"   remark="根据主键获取数据:USER">
+        SELECT  *
+        FROM USER
+    </operation>
+
+    <operation name="getAllUserCount" multiplicity="one" resulttype="java.lang.Long"   remark="根据主键获取数据:USER">
+        SELECT  Count(*)
+        FROM USER
+    </operation>
+
+    <operation name="getByAccount" multiplicity="one" remark="根据主键获取数据:USER">
+        SELECT *
+        FROM USER
+        WHERE
+        ACCOUNT = #{account,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByEmail" multiplicity="one" remark="更新�?:USER">
+        SELECT *
+        FROM USER
+        WHERE
+        EMAIL = #{email,jdbcType=VARCHAR}
+    </operation>
+</table>

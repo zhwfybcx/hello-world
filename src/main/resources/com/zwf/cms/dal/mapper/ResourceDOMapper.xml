@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.ResourceDOMapper">
+    <!-- 自动生成,请修�? RESOURCE.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.ResourceDO">
+        <id column="ID" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="TITLE" property="title" jdbcType="VARCHAR" javaType="String"/>
+        <result column="TYPE_ID" property="typeId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,TITLE,TYPE_ID,CONTENT,CREATE_TIME
+    </sql>
+
+
+    <!--插入�?:RESOURCE-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO RESOURCE(
+            ID
+            ,TITLE
+            ,TYPE_ID
+            ,CONTENT
+            ,CREATE_TIME
+        )VALUES(
+             #{id,jdbcType=BIGINT}
+            , #{title,jdbcType=VARCHAR}
+            , #{typeId,jdbcType=VARCHAR}
+            , #{content,jdbcType=LONGVARCHAR}
+            , #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--更新�?:RESOURCE-->
+    <update id="update" >
+        UPDATE /*MS-RESOURCE-UPDATE*/ RESOURCE
+        SET
+            TITLE           = #{title,jdbcType=VARCHAR}
+            ,TYPE_ID         = #{typeId,jdbcType=VARCHAR}
+            ,CONTENT         = #{content,jdbcType=LONGVARCHAR}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--根据主键删除数据:RESOURCE-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-RESOURCE-DELETEBYPRIMARY*/ FROM
+            RESOURCE
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据主键获取数据:RESOURCE-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-RESOURCE-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM RESOURCE
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+    </select>
+</mapper>

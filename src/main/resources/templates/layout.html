@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <title>layout</title>
+      <meta charset="utf-8"></meta>
+      <!-- Bootstrap Styles-->
+      <link th:href="@{/css/bootstrap.css}" rel="stylesheet"></link>
+      <!-- FontAwesome Styles-->
+      <link th:href="@{/css/font-awesome.css}" rel="stylesheet"></link>
+      <link th:href="@{/css/custom-styles.css}" rel="stylesheet"></link>
+      <link th:href="@{/css/jquery.mmenu.css}" rel="stylesheet"></link>
+      <link th:href="@{/css/style.min.css}" rel="stylesheet"></link>
+      <link th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet"></link>
+      <script th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
+     <!-- <link th:href="@{/css/dashboard.css}" rel="stylesheet"></link>-->
+
+
+
+
+      <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+      <script th:src="@{/js/bootstrap.min.js}"></script>
+<!--
+	  <script th:src="@{/js/custom-scripts.js}"></script>
+-->
+      <script th:src="@{/js/jquery.metisMenu.js}"></script>
+      <script th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+      <!--<script th:src="@{/js/index.js}"></script>-->
+      <script th:src="@{/js/jquery.form.min.js}"></script>
+      <script th:src="@{/js/jquery.json.js}"></script>
+      <script th:src="@{/js/bootbox.min.js}"></script>
+      <script th:src="@{/js/common-scripts.js}"></script>
+
+
+
+  </head>
+<body>
+<!-- 头部 -->
+<div class="navbar" role="navigation">
+
+    <div class="container-fluid">
+
+        <ul class="nav navbar-nav navbar-actions navbar-left">
+            <li class="visible-md visible-lg"><a href="index.html#" id="main-menu-toggle"><i class="fa fa-th-large"></i></a></li>
+            <li class="visible-xs visible-sm"><a href="index.html#" id="sidebar-menu"><i class="fa fa-navicon"></i></a></li>
+        </ul>
+
+        <form class="navbar-form navbar-left">
+            <button type="submit" class="fa fa-search"></button>
+            <input type="text" class="form-control" placeholder="Search..."></input>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown visible-md visible-lg">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">admin</a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-menu-header">
+                        <strong>Account</strong>
+                    </li>
+                    <li><a th:href="@{/manage/admin/exit}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/manage/admin/exit}"><i class="fa fa-power-off"></i></a></li>
+        </ul>
+
+    </div>
+
+</div>
+<!-- end: 头部 -->
+
+<div class="container-fluid content">
+
+    <div class="row">
+
+        <!-- start:左侧导航 -->
+        <div class="sidebar ">
+
+            <div class="sidebar-collapse">
+                <div class="sidebar-header t-center">
+                    <span class="sidebar-brand"><strong><font size="6">CMS</font></strong><i class="fa fa-space-shuttle fa-3x "></i></span>
+                </div>
+                <div class="sidebar-menu">
+                    <ul id="nav_active"  class="nav nav-sidebar">
+                        <li><a th:href="@{/manage/article/list}"><i class="fa fa-laptop"></i><span class="text"> 文章管理</span></a></li>
+                        <li><a th:href="@{/manage/folder/list}"><i class="fa fa-file-text"></i><span class="text"> 目录管理</span></a></li>
+                        <li><a th:href="@{/manage/headline/list}"><i class="fa fa-file-text"></i><span class="text"> 轮播管理</span></a></li>
+
+                        <li><a th:href="@{/manage/comment/list}"><i class="fa fa-table"></i><span class="text"> 评论管理</span></a></li>
+                        <li>
+                            <a th:href="@{/manage/user/list}"><i class="fa fa-signal"></i><span class="text">用户管理</span></a>
+                        </li>
+                        <li>
+                            <a th:href="@{/manage/admin/list}"><i class="fa fa-briefcase"></i><span class="text">管理员管理</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+
+                <div class="sidebar-brand">
+                    CMS
+                </div>
+
+                <ul class="sidebar-terms">
+                    <li><a href="index.html#">Terms</a></li>
+                    <li><a href="index.html#">Privacy</a></li>
+                    <li><a href="index.html#">Help</a></li>
+                    <li><a href="index.html#">About</a></li>
+                </ul>
+
+                <div class="copyright text-center">
+                   cms <i class="fa fa-coffee"></i> from
+                </div>
+            </div>
+
+        </div>
+        <!-- end:左侧导航-->
+
+        <!-- start: 右侧内容 -->
+        <div class="main" layout:fragment="content">
+
+
+        </div>
+        <!-- end: 右侧内容 -->
+        <br/><br/><br/>
+
+    </div><!--/container-->‘
+  </div>
+
+<!--<script>
+
+   /* $(document).ready(function () {
+        var currentPage=window.location.href;
+        $.each($('#nav_active li a'),function () {
+            $(this).parent().removeClass('active');
+            var page=$(this).attr('href');
+            if(currentPage.lastIndexOf(page) != -1){
+                $(this).parent().addClass('active');
+            }
+        });
+    });*/
+   var myList=new Array("article","folder","headline","comment","user","admin")
+   $(function(){
+       $("#nav_active li a").each(function(index,domEle){
+           if($(domEle).attr('href') == window.location.pathname){
+               $(domEle).parents("li").addClass("active");
+           }else{
+               for(var i=0; i &lt; myList.length-1;i++){
+                   if(new RegExp(myList[i]).test(window.location.pathname)){
+                       $(domEle).parents("li").addClass("active");
+                   }
+               }
+           }
+       });
+   });
+</script>-->
+<script type="application/javascript" th:src="@{/js/layout.js}"></script>
+</body>
+</html>

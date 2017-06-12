@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.FolderDOMapper">
+    <!-- 自动生成,请修�? FOLDER.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.FolderDO">
+        <result column="NAME" property="name" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PATH" property="path" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SORT" property="sort" jdbcType="BIGINT" javaType="Long"/>
+        <result column="ENAME" property="ename" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LEVEL" property="level" jdbcType="BIGINT" javaType="Long"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FATHER_ID" property="fatherId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="FOLDER_ID" property="folderId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        NAME,PATH,SORT,ENAME,LEVEL,STATUS,FATHER_ID,FOLDER_ID,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入�?:FOLDER-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="folderId" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO FOLDER(
+        NAME
+        ,PATH
+        ,SORT
+        ,ENAME
+        ,LEVEL
+        ,STATUS
+        ,FATHER_ID
+        ,CREATE_TIME
+        ,UPDATE_TIME
+        )VALUES(
+        #{name,jdbcType=VARCHAR}
+        , #{path,jdbcType=VARCHAR}
+        , #{sort,jdbcType=BIGINT}
+        , #{ename,jdbcType=VARCHAR}
+        , #{level,jdbcType=BIGINT}
+        , #{status,jdbcType=VARCHAR}
+        , #{fatherId,jdbcType=BIGINT}
+        , now()
+        , now()
+        )
+    </insert>
+
+    <!--更新表?:FOLDER-->
+    <update id="update" >
+        UPDATE /*MS-FOLDER-UPDATE*/ FOLDER
+        SET
+        NAME            = #{name,jdbcType=VARCHAR}
+        ,PATH            = #{path,jdbcType=VARCHAR}
+        ,ENAME           = #{ename,jdbcType=VARCHAR}
+        ,LEVEL           = #{level,jdbcType=BIGINT}
+        ,STATUS          = #{status,jdbcType=VARCHAR}
+        ,FATHER_ID       = #{fatherId,jdbcType=BIGINT}
+        ,UPDATE_TIME     = now()
+        WHERE
+        FOLDER_ID       = #{folderId,jdbcType=BIGINT}
+    </update>
+
+    <!--根据主键删除数据:FOLDER-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-FOLDER-DELETEBYPRIMARY*/ FROM
+        FOLDER
+        WHERE
+        FOLDER_ID = #{folderId,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据主键获取数据:FOLDER-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM FOLDER
+        WHERE
+        FOLDER_ID = #{folderId,jdbcType=BIGINT}
+    </select>
+
+    <!--根据英文名字: 获取数据:FOLDER-->
+    <select id="getByEname" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETBYENAME*/  <include refid="Base_Column_List" />
+        FROM FOLDER
+        WHERE
+        ENAME = #{ename,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据id更新数据：path,level-->
+    <update id="updatePathLevel" >
+        UPDATE /*MS-FOLDER-UPDATEPATHLEVEL*/ FOLDER
+        SET
+        PATH = #{path,jdbcType=VARCHAR}
+        ,LEVEL = #{level,jdbcType=BIGINT}
+        ,UPDATE_TIME = NOW()
+        WHERE
+        FOLDER_ID = #{folderId,jdbcType=BIGINT}
+    </update>
+
+    <!--根据 id 更新数据:sort-->
+    <update id="updateSort" >
+        UPDATE /*MS-FOLDER-UPDATESORT*/ FOLDER
+        SET
+        SORT = #{sort,jdbcType=BIGINT}
+        ,UPDATE_TIME = NOW()
+        WHERE
+        FOLDER_ID = #{folderId,jdbcType=BIGINT}
+    </update>
+
+    <!--查找所有目录-->
+    <select id="getAllFolder" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETALLFOLDER*/  <include refid="Base_Column_List" />
+        FROM FOLDER
+        LIMIT 20000
+    </select>
+
+    <!--子目录的数量-->
+    <select id="getChildFolderNum" resultType="java.lang.Long">
+        SELECT /*MS-FOLDER-GETCHILDFOLDERNUM*/  count(1)
+        FROM folder
+        WHERE father_id = #{fatherId,jdbcType=BIGINT}
+    </select>
+
+    <!--查找子目录并进行分页-->
+    <select id="getChildFolderPages" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETCHILDFOLDERPAGES*/  <include refid="Base_Column_List" />
+        FROM folder
+        WHERE father_id = #{fatherId,jdbcType=BIGINT}
+        ORDER BY sort
+        LIMIT #{offset,jdbcType=TINYINT}, #{row,jdbcType=TINYINT};
+    </select>
+
+    <!--根据管理员查找所有目录-->
+    <select id="getFolderAdminId" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETFOLDERADMINID*/  <include refid="Base_Column_List" />
+        FROM folder
+        WHERE folder_id IN (
+        SELECT /*MS-FOLDER-GETFOLDERADMINID*/  af.folder_id
+        FROM admin_folder af
+        WHERE af.admin_id = #{adminId,jdbcType=BIGINT}
+        )
+    </select>
+
+    <!--根据管理员查找目录分页-->
+    <select id="getFolderPageByAdminId" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETFOLDERPAGEBYADMINID*/  <include refid="Base_Column_List" />
+        FROM folder
+        WHERE folder_id IN (
+        SELECT /*MS-FOLDER-GETFOLDERPAGEBYADMINID*/  af.folder_id
+        FROM admin_folder af
+        WHERE af.admin_id = #{adminId,jdbcType=BIGINT}
+        )
+        LIMIT #{offset,jdbcType=TINYINT},#{row,jdbcType=TINYINT};
+    </select>
+
+    <!--根据管理员Id 获取没有管理权限的目录-->
+    <select id="getFolderByNoAdminId" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETFOLDERBYNOADMINID*/  <include refid="Base_Column_List" />
+        FROM folder
+        WHERE folder_id NOT IN (
+        SELECT /*MS-FOLDER-GETFOLDERBYNOADMINID*/  af.folder_id
+        FROM admin_folder af
+        WHERE af.admin_id = #{adminId,jdbcType=BIGINT}
+        );
+    </select>
+
+    <!--根据管理员id获取管理的目录数量-->
+    <select id="getFolderCountbyAdminId" resultType="java.lang.Long">
+        SELECT /*MS-FOLDER-GETFOLDERCOUNTBYADMINID*/  count(1)
+        FROM folder
+        WHERE folder_id IN (
+        SELECT /*MS-FOLDER-GETFOLDERCOUNTBYADMINID*/  af.folder_id
+        FROM admin_folder af
+        WHERE af.admin_id = #{adminId,jdbcType=BIGINT}
+        )
+    </select>
+
+    <!--根据父Id，状态获得 folder-->
+    <select id="getFolderByFatherIdStatus" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETFOLDERBYFATHERIDSTATUS*/  <include refid="Base_Column_List" />
+        FROM folder
+        WHERE father_id=#{fatherId,jdbcType=BIGINT}
+        AND status=#{status,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据父亲ID获取数据:father_id-->
+    <select id="getByFatherId" resultMap="BaseResultMap">
+        SELECT /*MS-FOLDER-GETBYFATHERID*/  <include refid="Base_Column_List" />
+        FROM FOLDER
+        WHERE
+        father_id = 0
+        AND status= 'display'
+    </select>
+</mapper>

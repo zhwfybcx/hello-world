@@ -1,0 +1,46 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="CONFIG" physicalName="CONFIG" remark="CONFIG">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入�?CONFIG">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CONFIG(
+        KEY
+        ,VALUE
+        ,CREATETIME
+        ,DESCRIPTION
+        )VALUES(
+        #{key,jdbcType=VARCHAR}
+        , #{value,jdbcType=VARCHAR}
+        , #{createtime,jdbcType=TIMESTAMP}
+        , #{description,jdbcType=LONGVARCHAR}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新�?CONFIG">
+        UPDATE CONFIG
+        SET
+        VALUE           = #{value,jdbcType=VARCHAR}
+        ,CREATETIME      = #{createtime,jdbcType=TIMESTAMP}
+        ,DESCRIPTION     = #{description,jdbcType=LONGVARCHAR}
+        WHERE
+        KEY             = #{key,jdbcType=VARCHAR}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:CONFIG">
+        DELETE FROM
+        CONFIG
+        WHERE
+        KEY = #{key,jdbcType=VARCHAR}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:CONFIG">
+        SELECT *
+        FROM CONFIG
+        WHERE
+        KEY = #{key,jdbcType=VARCHAR}
+    </operation>
+</table>

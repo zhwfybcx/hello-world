@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.CmsReplayDOMapper">
+    <!-- 自动生成,请修�? CMS_REPLAY.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.CmsReplayDO">
+        <result column="IP" property="ip" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR" javaType="String"/>
+        <result column="USERID" property="userid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="REPLYID" property="replyid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="COMMENTID" property="commentid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        IP,NAME,USERID,CONTENT,REPLYID,COMMENTID,CREATETIME
+    </sql>
+
+
+    <!--插入�?:CMS_REPLAY-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="replyid" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CMS_REPLAY(
+            IP
+            ,NAME
+            ,USERID
+            ,CONTENT
+            ,REPLYID
+            ,COMMENTID
+            ,CREATETIME
+        )VALUES(
+             #{ip,jdbcType=VARCHAR}
+            , #{name,jdbcType=VARCHAR}
+            , #{userid,jdbcType=BIGINT}
+            , #{content,jdbcType=LONGVARCHAR}
+            , #{replyid,jdbcType=BIGINT}
+            , #{commentid,jdbcType=BIGINT}
+            , #{createtime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--更新�?:CMS_REPLAY-->
+    <update id="update" >
+        UPDATE /*MS-CMS-REPLAY-UPDATE*/ CMS_REPLAY
+        SET
+            IP              = #{ip,jdbcType=VARCHAR}
+            ,NAME            = #{name,jdbcType=VARCHAR}
+            ,USERID          = #{userid,jdbcType=BIGINT}
+            ,CONTENT         = #{content,jdbcType=LONGVARCHAR}
+            ,COMMENTID       = #{commentid,jdbcType=BIGINT}
+            ,CREATETIME      = #{createtime,jdbcType=TIMESTAMP}
+        WHERE
+            REPLYID         = #{replyid,jdbcType=BIGINT}
+    </update>
+
+    <!--根据主键删除数据:CMS_REPLAY-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-CMS-REPLAY-DELETEBYPRIMARY*/ FROM
+            CMS_REPLAY
+        WHERE
+            REPLYID = #{replyid,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据评论id删除数据:CMS_REPLAY-->
+    <delete id="deleteByCommentId" >
+        DELETE /*MS-CMS-REPLAY-DELETEBYCOMMENTID*/ FROM
+        CMS_REPLAY
+        WHERE
+        COMMENTID = #{commentid,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据主键获取数据:CMS_REPLAY-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-CMS-REPLAY-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM CMS_REPLAY
+        WHERE
+            REPLYID = #{replyid,jdbcType=BIGINT}
+    </select>
+
+    <!--根据主键获取数据:CMS_REPLAY-->
+    <select id="getByCommentId" resultMap="BaseResultMap">
+        SELECT /*MS-CMS-REPLAY-GETBYCOMMENTID*/  <include refid="Base_Column_List" />
+        FROM CMS_REPLAY
+        WHERE
+        COMMENTID= #{commentid,jdbcType=BIGINT}
+    </select>
+</mapper>

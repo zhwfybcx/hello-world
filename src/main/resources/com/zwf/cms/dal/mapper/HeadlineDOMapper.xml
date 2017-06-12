@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.HeadlineDOMapper">
+    <!-- 自动生成,请修�? HEADLINE.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.HeadlineDO">
+        <result column="URL" property="url" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SORT" property="sort" jdbcType="TINYINT" javaType="Integer"/>
+        <result column="CHANNEL" property="channel" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PICTURE" property="picture" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SUMMARY" property="summary" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="HEADLINEID" property="headlineid" jdbcType="BIGINT" javaType="Long"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        URL,NAME,SORT,CHANNEL,PICTURE,SUMMARY,CREATETIME,HEADLINEID
+    </sql>
+
+
+    <!--插入�?HEADLINE-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="headlineid" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO HEADLINE(
+        URL
+        ,NAME
+        ,SORT
+        ,PICTURE
+        ,CREATETIME
+        ,HEADLINEID
+        )VALUES(
+        #{url,jdbcType=VARCHAR}
+        , #{name,jdbcType=VARCHAR}
+        , #{sort,jdbcType=TINYINT}
+        , #{picture,jdbcType=VARCHAR}
+        , NOW()
+        , #{headlineid,jdbcType=BIGINT}
+        )
+    </insert>
+
+    <!--更新�?HEADLINE-->
+    <update id="update" >
+        UPDATE /*MS-HEADLINE-UPDATE*/ HEADLINE
+        SET
+        URL             = #{url,jdbcType=VARCHAR}
+        ,NAME            = #{name,jdbcType=VARCHAR}
+        ,SORT            = #{sort,jdbcType=TINYINT}
+        ,PICTURE         = #{picture,jdbcType=VARCHAR}
+        WHERE
+        HEADLINEID      = #{headlineid,jdbcType=BIGINT}
+    </update>
+
+    <!--根据主键删除数据:HEADLINE-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-HEADLINE-DELETEBYPRIMARY*/ FROM
+        HEADLINE
+        WHERE
+        HEADLINEID = #{headlineid,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据主键获取数据:HEADLINE-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-HEADLINE-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM HEADLINE
+        WHERE
+        HEADLINEID = #{headlineid,jdbcType=BIGINT}
+    </select>
+
+    <!--根据获取总数数据:HEADLINE-->
+    <select id="getByCount" resultType="java.lang.Long">
+        SELECT
+        COUNT(*)
+        FROM HEADLINE
+    </select>
+
+    <!--根据获取分页数据:HEADLINE-->
+    <select id="getHeadlineList" resultMap="BaseResultMap">
+        SELECT /*MS-HEADLINE-GETHEADLINELIST*/  <include refid="Base_Column_List" />
+        FROM HEADLINE
+        ORDER BY HEADLINEID DESC
+        LIMIT #{offset,jdbcType=BIGINT},#{rows,jdbcType=BIGINT}
+    </select>
+
+    <!--根据获取分页数据:HEADLINE-->
+    <select id="getHeadAllList" resultMap="BaseResultMap">
+        SELECT /*MS-HEADLINE-GETHEADALLLIST*/  <include refid="Base_Column_List" />
+        FROM HEADLINE
+        ORDER BY HEADLINEID DESC
+    </select>
+</mapper>

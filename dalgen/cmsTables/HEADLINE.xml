@@ -1,0 +1,68 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="HEADLINE" physicalName="HEADLINE" remark="HEADLINE">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入�?HEADLINE">
+        <selectKey resultType="java.lang.Long" keyProperty="headlineid" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO HEADLINE(
+        URL
+        ,NAME
+        ,SORT
+        ,PICTURE
+        ,CREATETIME
+        ,HEADLINEID
+        )VALUES(
+        #{url,jdbcType=VARCHAR}
+        , #{name,jdbcType=VARCHAR}
+        , #{sort,jdbcType=TINYINT}
+        , #{picture,jdbcType=VARCHAR}
+        , NOW()
+        , #{headlineid,jdbcType=BIGINT}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新�?HEADLINE">
+        UPDATE HEADLINE
+        SET
+        URL             = #{url,jdbcType=VARCHAR}
+        ,NAME            = #{name,jdbcType=VARCHAR}
+        ,SORT            = #{sort,jdbcType=TINYINT}
+        ,PICTURE         = #{picture,jdbcType=VARCHAR}
+        WHERE
+        HEADLINEID      = #{headlineid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:HEADLINE">
+        DELETE FROM
+        HEADLINE
+        WHERE
+        HEADLINEID = #{headlineid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:HEADLINE">
+        SELECT *
+        FROM HEADLINE
+        WHERE
+        HEADLINEID = #{headlineid,jdbcType=BIGINT}
+    </operation>
+    <operation name="getByCount" multiplicity="one" resulttype="java.lang.Long" remark="根据获取总数数据:HEADLINE">
+        SELECT
+        COUNT(*)
+        FROM HEADLINE
+    </operation>
+    <operation name="getHeadlineList" multiplicity="many" remark="根据获取分页数据:HEADLINE">
+        SELECT *
+        FROM HEADLINE
+        ORDER BY HEADLINEID DESC
+        LIMIT #{offset,jdbcType=BIGINT},#{rows,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getHeadAllList" multiplicity="many" remark="根据获取分页数据:HEADLINE">
+        SELECT *
+        FROM HEADLINE
+        ORDER BY HEADLINEID DESC
+    </operation>
+</table>

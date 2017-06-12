@@ -1,0 +1,109 @@
+@charset:"utf-8";
+@import "resets.css";
+@import "reset2.css";
+.input{height:28px;float:left;border:1px solid #878787;margin:0 12px;}
+
+/*head*/
+.header{zoom:"1";width:1200px;margin:0 auto}
+.header .h-nav{width:950px;float:right;margin:40px 0}
+.header .h-nav a{font-size:18px;height:18px;line-height:18px;width:auto;display:block;float:left;font-weight:600}
+.header .h-nav a:hover{text-decoration:none}
+.header .h-nav .h-inner{float:right}
+.header .h-nav .h-inner a{padding:0 0 0 30px}
+.header .h-nav .h-inner a:last-child{padding-left:6px}
+.header .h-nav .h-inner a:nth-last-child(2){padding-left:6px}
+.header .h-nav .h-inner .h-subnavs{float:left}
+.header .h-nav .h-inner .h-subnavs a:last-child{padding-left:30px}
+.header .h-nav .h-inner .h-subnavs a:nth-last-child(2){padding-left:30px}
+.header .h-on{color:#408AFF}
+.header .h-sub{width:250px;float:left;height:38px;zoom:"1";margin:31px 0}
+.header .h-sub img{height:38px;cursor:pointer;display:block;float:left}
+.header .h-sub span{display:block;float:left;padding-left:12px;font-size:20px;font-weight:600;height:38px;line-height:38px}
+a{color:#262626;}
+a:hover{color:#408aff}
+
+/*footer*/
+.footer{width:100%;margin:0 auto;height:60px;text-align:center;font-size:14px;color:#fff;background-color:#000000}
+.footer .foot{color:#fff;height:60px -20px;line-height:60px -20px;margin:10px 0;color:#fff}
+.footer .foot a{padding:0 20.5px 10px 21px;color:#fff}
+.footer div{margin:0 0 10px 0;color:#878787}
+
+/*hr*/
+.m-hr{height:2px;width:1200px;margin:0 auto;background-color:#408AFF;}
+.container{width:1200px;margin:0 auto;}
+
+/*banksign*/
+.u-d-h{width:1193px;height:60px;line-height:60px;border:1px solid #ccc;border-left:6px solid #408AFF;font-size:20px;text-indent:14px;font-weight:600;margin:20px 0 0 0;background-color:#f3f3f3}
+.u-d-h span{color:#535353;font-weight:normal;margin-left:20px}
+.u-d-tip{width:1198px;height:40px;line-height:40px;font-size:16px;background-color:#FFE8BF;border:1px solid #FFC661;margin:20px 0 0 0;color:#535353;text-align:center}
+.u-d-tip span{color:#FC4208}
+.u-d-bankS{width:950px;margin:20px 0 0 0;padding-left:60px}
+.u-d-bankS li,.u-d-bankS .header a,.header .u-d-bankS a{height:30px;line-height:30px;font-size:16px;color:#262626;margin:10px 0}
+.u-d-bankS li label,.u-d-bankS .header a label,.header .u-d-bankS a label{width:96px}
+.u-d-bankS li .input,.u-d-bankS .header a .input,.header .u-d-bankS a .input{margin:0;width:270px}
+.u-d-bankS li .input input[type=text],.u-d-bankS .header a .input input[type=text],.header .u-d-bankS a .input input[type=text]{width:260px;height:28px;line-height:28px;padding:0 5px;}
+.u-d-bankS .sbtn{height:34px;margin:20px 0 0 96px}
+.u-d-bankS .sbtn input[type=button],.u-d-bankS .sbtn .btn{width:auto;font-size:14px;height:34px;line-height:34px;vertical-align:top}
+.u-d-bankS .sbtn span{margin-left:20px;font-size:14px;color:#408AFF;height:34px;line-height:34px;cursor:pointer}
+.u-d-bankS .sbtn input[type=button]{
+	height: 34px;
+	line-height: 34px;
+	background-color: #408AFF;
+	border-radius: 5px;
+	padding: 0 20px;
+	color:#ffffff;
+}
+.with_tip {
+    margin: 60px 20px 20px 20px;
+    padding:20px;
+    border: 4px solid #ccc;
+    width: 1000px;
+    min-height: 200px;
+    color: #535353;
+}
+.with_tip .w-tip-head{
+	font-size: 16px;
+	color:#262626;
+	padding-bottom: 10px;
+}
+.with_tip li{
+	padding-left: 10px;
+	height: 18px;
+	line-height: 18px;
+	font-size: 14px;
+	color:#878787;
+}
+/*鍏呭�*/
+.rechange li .input{
+	width: 200px;
+}
+.rechange li .input input[type=text]{
+ width: 190px;
+}
+.rechange li span{
+	padding-left: 6px;
+}
+.ieVersion {
+    position: fixed;
+    background: #FBE695;
+    background: -ms-linear-gradient(top, #F3E9BA, #FBE695);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F3E9BA), to(#FBE695));
+    top: 0;
+    left: 0;
+    z-index: 100000;
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    border: 1px solid #B1A5B3;
+    text-align: left;
+    padding-left: 40px;
+    color: #535353;
+}
+.ieVersion a {
+    position: relative;
+    width: 90px;
+    float: right;
+    color: #408AFF;
+    text-decoration: underline;
+    z-index: 99;
+}

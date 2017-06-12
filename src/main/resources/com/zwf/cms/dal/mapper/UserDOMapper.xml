@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.UserDOMapper">
+    <!-- 自动生成,请修�? USER.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.UserDO">
+        <result column="EMAIL" property="email" jdbcType="VARCHAR" javaType="String"/>
+        <result column="USERID" property="userid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="ACCOUNT" property="account" jdbcType="BIGINT" javaType="Long"/>
+        <result column="NICKNAME" property="nickname" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        EMAIL,USERID,ACCOUNT,NICKNAME,PASSWORD,CREATETIME
+    </sql>
+
+
+    <!--插入�?:USER-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="userid" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO USER(
+            EMAIL
+            ,USERID
+            ,ACCOUNT
+            ,NICKNAME
+            ,PASSWORD
+            ,CREATETIME
+        )VALUES(
+             #{email,jdbcType=VARCHAR}
+            , #{userid,jdbcType=BIGINT}
+            , #{account,jdbcType=BIGINT}
+            , #{nickname,jdbcType=VARCHAR}
+            , #{password,jdbcType=VARCHAR}
+            , #{createtime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--更新�?:USER-->
+    <update id="update" >
+        UPDATE /*MS-USER-UPDATE*/ USER
+        SET
+            EMAIL           = #{email,jdbcType=VARCHAR}
+            ,ACCOUNT         = #{account,jdbcType=BIGINT}
+            ,NICKNAME        = #{nickname,jdbcType=VARCHAR}
+            ,PASSWORD        = #{password,jdbcType=VARCHAR}
+            ,CREATETIME      = #{createtime,jdbcType=TIMESTAMP}
+        WHERE
+            USERID          = #{userid,jdbcType=BIGINT}
+    </update>
+
+    <!--根据主键删除数据:USER-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-USER-DELETEBYPRIMARY*/ FROM
+            USER
+        WHERE
+            USERID = #{userid,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据主键获取数据:USER-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-USER-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM USER
+        WHERE
+            USERID = #{userid,jdbcType=BIGINT}
+    </select>
+
+    <!--根据主键获取数据:USER-->
+    <select id="getByDateCount" resultType="java.lang.Long">
+        SELECT /*MS-USER-GETBYDATECOUNT*/   COUNT(*)
+        FROM USER
+        WHERE DATE_FORMAT(createTime,'%Y-%m-%d') = #{timeDesc,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据主键获取数据:USER-->
+    <select id="getAllUser" resultMap="BaseResultMap">
+        SELECT /*MS-USER-GETALLUSER*/   <include refid="Base_Column_List" />
+        FROM USER
+    </select>
+
+    <!--根据主键获取数据:USER-->
+    <select id="getAllUserCount" resultType="java.lang.Long">
+        SELECT /*MS-USER-GETALLUSERCOUNT*/   Count(*)
+        FROM USER
+    </select>
+
+    <!--根据主键获取数据:USER-->
+    <select id="getByAccount" resultMap="BaseResultMap">
+        SELECT /*MS-USER-GETBYACCOUNT*/  <include refid="Base_Column_List" />
+        FROM USER
+        WHERE
+        ACCOUNT = #{account,jdbcType=BIGINT}
+    </select>
+
+    <!--更新�?:USER-->
+    <select id="getByEmail" resultMap="BaseResultMap">
+        SELECT /*MS-USER-GETBYEMAIL*/  <include refid="Base_Column_List" />
+        FROM USER
+        WHERE
+        EMAIL = #{email,jdbcType=VARCHAR}
+    </select>
+</mapper>

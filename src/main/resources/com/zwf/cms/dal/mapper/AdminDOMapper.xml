@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.AdminDOMapper">
+    <!-- 自动生成,请修�? ADMIN.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.AdminDO">
+        <result column="NAME" property="name" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ADMIN_ID" property="adminId" jdbcType="BIGINT" javaType="Long"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        NAME,ADMIN_ID,PASSWORD,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:ADMIN-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="adminId" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ADMIN(
+        NAME
+        ,ADMIN_ID
+        ,PASSWORD
+        ,CREATE_TIME
+        ,UPDATE_TIME
+        )VALUES(
+        #{name,jdbcType=VARCHAR}
+        , #{adminId,jdbcType=BIGINT}
+        , #{password,jdbcType=VARCHAR}
+        , now()
+        , now()
+        )
+    </insert>
+
+    <!--更新表:ADMIN-->
+    <update id="update" >
+        UPDATE /*MS-ADMIN-UPDATE*/ ADMIN
+        SET
+        NAME            = #{name,jdbcType=VARCHAR}
+        ,PASSWORD        = #{password,jdbcType=VARCHAR}
+        ,UPDATE_TIME     = now()
+        WHERE
+        ADMIN_ID        = #{adminId,jdbcType=BIGINT}
+    </update>
+
+    <!--根据主键删除数据:ADMIN-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-ADMIN-DELETEBYPRIMARY*/ FROM
+        ADMIN
+        WHERE
+        ADMIN_ID = #{adminId,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据主键获取数据:ADMIN-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-ADMIN-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM ADMIN
+        WHERE
+        ADMIN_ID = #{adminId,jdbcType=BIGINT}
+    </select>
+
+    <!--根据姓名获取数据:ADMIN-->
+    <select id="getByName" resultMap="BaseResultMap">
+        SELECT /*MS-ADMIN-GETBYNAME*/  <include refid="Base_Column_List" />
+        FROM ADMIN
+        WHERE
+        name = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <!--获取部分数据:ADMIN-->
+    <select id="getPartList" resultMap="BaseResultMap">
+        SELECT /*MS-ADMIN-GETPARTLIST*/  <include refid="Base_Column_List" />
+        FROM ADMIN
+        limit #{offset,jdbcType=BIGINT},#{rows,jdbcType=BIGINT}
+    </select>
+
+    <!--获取部分数据的数量:ADMIN-->
+    <select id="getAllListCount" resultType="int">
+        SELECT /*MS-ADMIN-GETALLLISTCOUNT*/  count(*)
+        FROM ADMIN
+    </select>
+
+    <!--获取全部数据的数量:ADMIN-->
+    <select id="getAllList" resultMap="BaseResultMap">
+        SELECT /*MS-ADMIN-GETALLLIST*/  <include refid="Base_Column_List" />
+        FROM ADMIN
+        ORDER BY update_time
+    </select>
+</mapper>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title>CMS</title>
+    <link  th:href="@{/css/style_log.css}"  rel="stylesheet" type="text/css"></link>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"></link>
+    <script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/jquery.form.min.js}"></script>
+    <script th:src="@{/js/jquery.json.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/common-scripts.js}"></script>
+    <script type="text/javascript" th:src="@{/js/user/login.js}"></script>
+</head>
+
+<body class="login" mycollectionplug="bind">
+<div class="login_m">
+    <div class="login_boder">
+        <div class="login_padding " id="login_model">
+            <h3 style="margin:0 auto;width:50px;">登录</h3>
+            <P style="margin:0;padding:0; width:80%;height:1px;background-color:#f9f9f9;"></P>
+            <div class="input-group" style="margin:0 auto;" >
+                <h2>账号</h2>
+                <label>
+                    <input type="text" id="username" class="form-control" />
+                </label>
+            </div>
+            <div class="input-group" style="margin:0 auto;" >
+                <h2>密码</h2>
+                <label>
+                    <input type="password" class="form-control" id="userpwd" />
+                </label>
+                <p class="forgot"><a id="iforget" href="javascript:void(0);">忘记密码</a></p>
+            </div>
+
+            <div class="rem_sub" style="margin:0 auto;">
+                <label class="rem_sub_l" >
+                    <input type="submit" class=" btn sub_button"  name="button" id="button" value="登录" style="opacity: 0.7;" />
+                </label >
+
+                <label>
+                    <a th:href="@{/user/register}"  class="btn sub_r_button"  id="r_button"  style="opacity: 0.7;" >注册</a>
+                </label>
+            </div>
+        </div>
+
+        <div id="forget_model" class="login_padding" style="display:none">
+            <h3 style="margin:0 auto;width:100px;">忘记密码</h3>
+            <P style="margin:0;padding:0; width:80%;height:1px;background-color:#f9f9f9;"></P>
+            <div class="input-group" style="margin:0 auto;" >
+                <h2>邮箱地址：</h2>
+                <label>
+                    <input type="text" id="usrmail" name="email" class="form-control" />
+                </label>
+            </div>
+
+            <div class="input-group" style="margin:0 auto;" >
+                <h2>输入新密码：</h2>
+                <label>
+                    <input type="password" name="password"  id="uPassword" class="form-control" />
+                </label>
+            </div>
+
+
+            <div class="rem_sub">
+                <div class="rem_sub_l">
+                    <input type="submit" class=" btn sub_up_buttons"  name="button" id="Retrievenow" value="立即修改" style="opacity: 0.7;" />
+                </div>
+                <label>
+                    <input type="submit" class="btn sub_re_buttons" name="button" id="denglou" value="返回" style="opacity: 0.7;" />　　
+                </label>
+            </div>
+        </div>
+        <!--login_padding  Sign up end-->
+    </div><!--login_boder end-->
+</div><!--login_m end-->
+<script type="text/javascript">
+    $(function(){
+        ////忘记密码
+        $("#iforget").click(function () {
+            $("#login_model").hide();
+            $("#forget_model").show();
+
+        });
+
+        //返回
+        $("#denglou").click(function () {
+            $("#usrmail").val("");
+            $("#username").val("");
+            $("#userpwd").val("");
+            $("#login_model").show();
+            $("#forget_model").hide();
+
+        });
+
+    })
+
+</script>
+</body>
+</html>

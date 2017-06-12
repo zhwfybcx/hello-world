@@ -1,0 +1,69 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="CMS_REPLAY" physicalName="CMS_REPLAY" remark="CMS_REPLAY">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入�?:CMS_REPLAY">
+        <selectKey resultType="java.lang.Long" keyProperty="replyid" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CMS_REPLAY(
+            IP
+            ,NAME
+            ,USERID
+            ,CONTENT
+            ,REPLYID
+            ,COMMENTID
+            ,CREATETIME
+        )VALUES(
+             #{ip,jdbcType=VARCHAR}
+            , #{name,jdbcType=VARCHAR}
+            , #{userid,jdbcType=BIGINT}
+            , #{content,jdbcType=LONGVARCHAR}
+            , #{replyid,jdbcType=BIGINT}
+            , #{commentid,jdbcType=BIGINT}
+            , #{createtime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新�?:CMS_REPLAY">
+        UPDATE CMS_REPLAY
+        SET
+            IP              = #{ip,jdbcType=VARCHAR}
+            ,NAME            = #{name,jdbcType=VARCHAR}
+            ,USERID          = #{userid,jdbcType=BIGINT}
+            ,CONTENT         = #{content,jdbcType=LONGVARCHAR}
+            ,COMMENTID       = #{commentid,jdbcType=BIGINT}
+            ,CREATETIME      = #{createtime,jdbcType=TIMESTAMP}
+        WHERE
+            REPLYID         = #{replyid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:CMS_REPLAY">
+        DELETE FROM
+            CMS_REPLAY
+        WHERE
+            REPLYID = #{replyid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByCommentId" multiplicity="one" remark="根据评论id删除数据:CMS_REPLAY">
+        DELETE FROM
+        CMS_REPLAY
+        WHERE
+        COMMENTID = #{commentid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:CMS_REPLAY">
+        SELECT *
+        FROM CMS_REPLAY
+        WHERE
+            REPLYID = #{replyid,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByCommentId" multiplicity="many" remark="根据主键获取数据:CMS_REPLAY">
+        SELECT *
+        FROM CMS_REPLAY
+        WHERE
+        COMMENTID= #{commentid,jdbcType=BIGINT}
+    </operation>
+</table>

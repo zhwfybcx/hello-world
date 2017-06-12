@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>更新目录</title>
+    <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script th:src="@{/js/jquery.form.min.js}"></script>
+    <script th:src="@{/js/jquery.json.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa-laptop"></i> 添加目录</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a th:href="@{/manage/folder/list}">目录管理</a></li>
+                <li><i class="fa fa-laptop"></i><a id="update_folder">更新目录</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <section class="panel background">
+            <header class="panel-heading">
+                <span class="header">修改目录</span>
+            </header>
+            <div class="panel-body">
+                <form id="updateFolder_form" th:method="post" class="form-horizontal"
+                      th:action="@{/manage/folder/updateForm}">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">目录名称</label>
+                            <div class="col-xs-9">
+                                <input type="hidden" id="updateFid" th:value="${folderId}" name="folderId"/>
+                                <input type="hidden" th:value="${ename}" name="originEname"/>
+                                <input type="text" name="name" id="name" style="font-size:15px;width: 200px;"
+                                       class="form-control" th:value="${name}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">英文名称</label>
+                            <div class="col-xs-9">
+                                <input type="text" name="ename" id="ename" style="font-size:15px;width: 200px;"
+                                       class="form-control" th:value="${ename}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">父级标签</label>
+                            <div class="col-xs-9">
+                                <input type="hidden" id="updateFaid" th:value="${fatherId}" />
+                                <select name="fatherId" th:id="${fatherId}" class="form-control input-lg m-bot15"
+                                        style="font-size:15px;width: 200px;">
+                                    <option value="0">根目录</option>
+                                        <option th:each="folder:${folderAll}"
+                                                th:value="${folder.folderId}"
+                                                th:text="${folder.pathName}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">目录状态</label>
+                            <div class="col-xs-9">
+                                <label class="radio-inline" >
+                                    <input type="radio"  id="inlineRadio1"  name="status"  th:checked="${status eq 'display'}?true:false" />显示
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio"  id="inlineRadio2"  name="status"  th:checked="${status eq 'hidden'}?true:false"  />隐藏
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-shadow btn-primary" type="submit">更新目录</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+<script type="text/javascript">
+    var folderId=$("#updateFid").attr("value")
+    $(function () {
+        var fatherId=$("#updateFaid").attr("value")
+        $("div.col-xs-9 select").val(fatherId);
+        $('#updateFolder_form').ajaxForm({
+            success: function (data) {
+                if (data.result) {
+                    bootbox.alert("更新成功",
+                        function () {
+                            window.location.href = "/manage/folder/list?folderId=" + fatherId;
+                        });
+                } else {
+                    showErrors($('#updateFolder_form'), data.errors);
+                }
+            }
+        });
+
+        $("#update_folder").bind('click',function(){
+            window.location.reload();
+        })
+    });
+</script>
+</div>
+</body>
+</html>

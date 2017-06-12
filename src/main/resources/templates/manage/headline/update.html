@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>更新轮播</title>
+    <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script th:src="@{/js/jquery.form.min.js}"></script>
+    <script th:src="@{/js/jquery.json.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-laptop"></i> 添加轮播</h3>
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a th:href="@{/manage/headline/list}">轮播管理</a></li>
+                        <li><i class="fa fa-laptop"></i><a id="update_headline" >更新轮播</a></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row">
+                <section class="panel background">
+                 <header class="panel-heading header">更新</header>
+                    <form id="update" class="form-horizontal"  th:action="@{/manage/headline/update/json}" th:method="post">
+                        <input type="hidden" name="headlineid" th:value="${headlineDO.headlineid}" />
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">头图名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" style="font-size: 15px; width: 400px;"
+                                       class="form-control upname" name="name"  th:value="${headlineDO.name}"> </input>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">头图链接</label>
+                            <div class="col-sm-10">
+                                <input type="text" style="font-size: 15px; width: 400px;"
+                                       class="form-control uppic" name="picture" th:value="${headlineDO.picture}"> </input>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">链接</label>
+                            <div class="col-sm-10">
+                                <input type="text" style="font-size: 15px; width: 400px;"
+                                       class="form-control upurl" name="url" th:value="${headlineDO.url}"> </input>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-danger" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function() {
+                $("#update").ajaxForm({
+                    dataType : "json",
+                    success : function(data) {
+                        if (data.result) {
+                            bootbox.alert("更新成功",function(){
+                                window.location.href = "/manage/headline/list";
+                            })
+                        }
+                    }
+                });
+
+                $('#update_headline').bind("click",function(){
+                    window.location.reload();
+                })
+            });
+
+
+        </script>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="RESOURCE" physicalName="RESOURCE" remark="RESOURCE">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入�?:RESOURCE">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO RESOURCE(
+            ID
+            ,TITLE
+            ,TYPE_ID
+            ,CONTENT
+            ,CREATE_TIME
+        )VALUES(
+             #{id,jdbcType=BIGINT}
+            , #{title,jdbcType=VARCHAR}
+            , #{typeId,jdbcType=VARCHAR}
+            , #{content,jdbcType=LONGVARCHAR}
+            , #{createTime,jdbcType=TIMESTAMP}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新�?:RESOURCE">
+        UPDATE RESOURCE
+        SET
+            TITLE           = #{title,jdbcType=VARCHAR}
+            ,TYPE_ID         = #{typeId,jdbcType=VARCHAR}
+            ,CONTENT         = #{content,jdbcType=LONGVARCHAR}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:RESOURCE">
+        DELETE FROM
+            RESOURCE
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:RESOURCE">
+        SELECT *
+        FROM RESOURCE
+        WHERE
+            ID = #{id,jdbcType=BIGINT}
+    </operation>
+</table>

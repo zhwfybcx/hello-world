@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zwf.cms.dal.mapper.ArticleDOMapper">
+    <!-- 自动生成,请修�? ARTICLE.xml -->
+    <resultMap id="BaseResultMap"  type="com.zwf.cms.dal.dataobject.ArticleDO">
+        <result column="PATH" property="path" jdbcType="VARCHAR" javaType="String"/>
+        <result column="TITLE" property="title" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PICURL" property="picurl" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ADMINID" property="adminid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="CHECKIF" property="checkif" jdbcType="CHAR" javaType="String"/>
+        <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="PICTURE" property="picture" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SUMMARY" property="summary" jdbcType="VARCHAR" javaType="String"/>
+        <result column="FOLDERID" property="folderid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="ARTICLEID" property="articleid" jdbcType="BIGINT" javaType="Long"/>
+        <result column="VIEWCOUNT" property="viewcount" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="ARTICLEURL" property="articleurl" jdbcType="LONGVARCHAR" javaType="String"/>
+        <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="COMMENTCOUNT" property="commentcount" jdbcType="INTEGER" javaType="Integer"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        PATH,TITLE,PICURL,STATUS,ADMINID,CHECKIF,CONTENT,PICTURE,SUMMARY,FOLDERID,ARTICLEID,VIEWCOUNT,ARTICLEURL,CREATETIME,UPDATETIME,COMMENTCOUNT
+    </sql>
+
+
+    <!--插入表:ARTICLE-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="articleid" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ARTICLE(
+        PATH
+        ,TITLE
+        ,PICURL
+        ,STATUS
+        ,ADMINID
+        ,CHECKIF
+        ,CONTENT
+        ,PICTURE
+        ,SUMMARY
+        ,FOLDERID
+        ,ARTICLEID
+        ,VIEWCOUNT
+        ,ARTICLEURL
+        ,CREATETIME
+        ,UPDATETIME
+        ,COMMENTCOUNT
+        )VALUES(
+        #{path,jdbcType=VARCHAR}
+        , #{title,jdbcType=VARCHAR}
+        , #{picurl,jdbcType=LONGVARCHAR}
+        , #{status,jdbcType=VARCHAR}
+        , #{adminid,jdbcType=BIGINT}
+        , #{checkif,jdbcType=CHAR}
+        , #{content,jdbcType=LONGVARCHAR}
+        , #{picture,jdbcType=VARCHAR}
+        , #{summary,jdbcType=VARCHAR}
+        , #{folderid,jdbcType=BIGINT}
+        , #{articleid,jdbcType=BIGINT}
+        , #{viewcount,jdbcType=INTEGER}
+        , #{articleurl,jdbcType=LONGVARCHAR}
+        , now()
+        , now()
+        , #{commentcount,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--更新表:ARTICLE-->
+    <update id="update" >
+        UPDATE /*MS-ARTICLE-UPDATE*/ ARTICLE
+        SET
+        PATH            = #{path,jdbcType=VARCHAR}
+        ,TITLE           = #{title,jdbcType=VARCHAR}
+        ,PICURL          = #{picurl,jdbcType=LONGVARCHAR}
+        ,STATUS          = #{status,jdbcType=VARCHAR}
+        ,ADMINID         = #{adminid,jdbcType=BIGINT}
+        ,CHECKIF         = #{checkif,jdbcType=CHAR}
+        ,CONTENT         = #{content,jdbcType=LONGVARCHAR}
+        ,PICTURE         = #{picture,jdbcType=VARCHAR}
+        ,SUMMARY         = #{summary,jdbcType=VARCHAR}
+        ,FOLDERID        = #{folderid,jdbcType=BIGINT}
+        ,VIEWCOUNT       = #{viewcount,jdbcType=INTEGER}
+        ,ARTICLEURL      = #{articleurl,jdbcType=LONGVARCHAR}
+        ,UPDATETIME      = now()
+        ,COMMENTCOUNT    = #{commentcount,jdbcType=INTEGER}
+        WHERE
+        ARTICLEID       = #{articleid,jdbcType=BIGINT}
+    </update>
+
+    <!--根据主键删除数据:ARTICLE-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-ARTICLE-DELETEBYPRIMARY*/ FROM
+        ARTICLE
+        WHERE
+        ARTICLEID = #{articleid,jdbcType=BIGINT}
+    </delete>
+
+    <!--根据主键获取数据:ARTICLE-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-ARTICLE-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM ARTICLE
+        WHERE
+        ARTICLEID = #{articleid,jdbcType=BIGINT}
+    </select>
+</mapper>

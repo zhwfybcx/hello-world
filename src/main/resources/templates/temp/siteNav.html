@@ -1,0 +1,18 @@
+<div class="new-header" th:fragment="in_nav">
+    <div class="log-reg">
+        <input type="hidden" id="site_userid "  value=""/>
+        <a th:href="@{/user/login}">登录</a>
+        <b>｜</b>
+        <a th:href="@{/user/register}">注册</a>
+    </div>
+</div>
+
+
+<div class="new-header" th:fragment="al_nav">
+    <div class="log-reg">
+        <input type="hidden" id="site_userid "  th:value="${user.userid}"/>
+        <span th:text="${user.nickname}" style="color: #FFFFFF;font-weight:bold;"></span>
+        <b>｜</b>
+        <a th:href="@{/user/exit}">安全退出</a>
+    </div>
+</div>
